@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Asistencia;
 use Illuminate\Http\Request;
 use App\estudiante;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,66 @@ class EstudianteController extends Controller
             ->where('estudiantes.estado', 1)
             ->get();
         return view('estudiantes.index', compact('usuarios'));
+    }
+
+    public function asistencias(Estudiante $estudiante, Request $request)
+    {
+
+        if ($request->ajax()) {
+            $mes = $request->mes;
+            $anio = $request->anio;
+            $fecha = $anio . '-' . $mes . '-01';
+            $array_dias = ['D', 'L', 'M', 'M', 'J', 'V', "S"];
+
+            $dias = date('t', \strtotime($fecha));
+
+            $header = '';
+            $dias_html = '<tr>';
+            for ($i = 1; $i <= $dias; $i++) {
+                $nro_dia = $i;
+                if ($nro_dia < 10) {
+                    $nro_dia = '0' . $nro_dia;
+                }
+                $fecha_dia = $anio . '-' . $mes . '-' . $nro_dia;
+                $txt_dia = date('w', strtotime($fecha_dia));
+
+                $header .= '<th>' . $i . '<br>' . $array_dias[$txt_dia] . '</th>';
+                if ($i < 10) {
+                    $fecha = $anio . '-' . $mes . '-0' . $i;
+                } else {
+                    $fecha = $anio . '-' . $mes . '-' . $i;
+                }
+
+                $asistencia = Asistencia::where('user_id', $estudiante->user->id)
+                    ->where('fecha', $fecha)->get()->first();
+                if ($asistencia) {
+                    $dias_html .= '<td><i class="fa fa-check text-success"></i></td>';
+                } else {
+                    $dias_html .= '<td><i class="fa fa-times text-danger"></i></td>';
+                }
+            }
+            $dias_html .= '</tr>';
+
+            return response()->JSON([
+                'sw' => true,
+                'header' => $header,
+                'dias' => $dias_html,
+            ]);
+        }
+
+        $gestion_min = Asistencia::min('fecha');
+        $gestion_max = Asistencia::max('fecha');
+        $gestion_min = date('Y', strtotime($gestion_min));
+        $gestion_max = date('Y', strtotime($gestion_max));
+
+        $array_gestiones = [];
+        if ($gestion_min) {
+            $array_gestiones[''] = 'Seleccione...';
+            for ($i = (int)$gestion_min; $i <= (int)$gestion_max; $i++) {
+                $array_gestiones[$i] = $i;
+            }
+        }
+        return view('estudiantes.asistencias', compact('estudiante', 'array_gestiones'));
     }
 
     public function create()

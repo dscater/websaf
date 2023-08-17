@@ -32,11 +32,13 @@ class ReporteController extends Controller
             ->where('users.estado', 1)
             ->get();
 
-        $gestion_min = Profesor::min('fecha_registro');
-        $gestion_max = Profesor::max('fecha_registro');
+        $gestion_min = Asistencia::min('fecha');
+        $gestion_max = Asistencia::max('fecha');
         $gestion_min = date('Y', strtotime($gestion_min));
         $gestion_max = date('Y', strtotime($gestion_max));
-
+        if ($gestion_max < date("Y")) {
+            $gestion_max = date("Y");
+        }
         $array_gestiones = [];
         if ($gestion_min) {
             $array_gestiones[''] = 'Seleccione...';
@@ -694,11 +696,11 @@ class ReporteController extends Controller
         $fecha = $anio . '-' . $mes . '-01';
         $dias = date('t', \strtotime($fecha));
 
-        $profesors = Profesor::select('profesors.*')
-            ->where('profesors.estado', 1)
+        $estudiantes = Estudiante::select('estudiantes.*')
+            ->where('estudiantes.estado', 1)
             ->get();
 
-        $header = '<th>Profesor</th>';
+        $header = '<th>Estudiante</th>';
         for ($i = 1; $i <= $dias; $i++) {
             $nro_dia = $i;
             if ($nro_dia < 10) {
@@ -710,9 +712,9 @@ class ReporteController extends Controller
         }
 
         $fila_html = '';
-        foreach ($profesors as $profesor) {
+        foreach ($estudiantes as $estudiante) {
             $fila_html .= '<tr>';
-            $fila_html .= '<td>' . $profesor->nombre . ' ' . $profesor->paterno . ' ' . $profesor->materno . '
+            $fila_html .= '<td>' . $estudiante->nombre . ' ' . $estudiante->paterno . ' ' . $estudiante->materno . '
                             </td>';
             for ($i = 1; $i <= $dias; $i++) {
                 if ($i < 10) {
@@ -720,7 +722,7 @@ class ReporteController extends Controller
                 } else {
                     $fecha = $anio . '-' . $mes . '-' . $i;
                 }
-                $asistencia = Asistencia::where('user_id', $profesor->user->id)
+                $asistencia = Asistencia::where('user_id', $estudiante->user->id)
                     ->where('fecha', $fecha)->get()->first();
                 if ($asistencia) {
                     $fila_html .= '<td class="txt_center"><span class="verde">A</span></td>';

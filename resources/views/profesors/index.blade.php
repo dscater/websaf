@@ -79,7 +79,7 @@
                                     <td><img src="{{asset('imgs/users/'.$usuario->foto)}}" alt="Foto" class="img-table"></td>
                                     <td class="text-center"><a href="{{route('profesor_materias.index',$usuario->id)}}" class="btn btn-info bn-sm" data-toggle="tooltip" title="{{$titulo}}">{{count($usuario->materias)}} Materias</a></td>
                                     <td class="btns-opciones">
-                                        <a href="{{route('profesors.asistencias',$usuario->id)}}" class="ir-evaluacion"><i class="far fa-list-alt" data-toggle="tooltip" data-placement="left" title="Asistencias"></i></a>
+                                        {{-- <a href="{{route('profesors.asistencias',$usuario->id)}}" class="ir-evaluacion"><i class="far fa-list-alt" data-toggle="tooltip" data-placement="left" title="Asistencias"></i></a> --}}
 
                                         <a href="{{route('reportes.kardex_personal')}}?filtro=individual&personal={{$usuario->id}}-p" class="evaluar" target="_blank"><i class="far fa-list-alt" data-toggle="tooltip" data-placement="left" title="Kardex"></i></a>
 

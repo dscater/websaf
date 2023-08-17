@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\asistencia;
-use App\Profesor;
+use App\Estudiante;
 use Illuminate\Support\Facades\DB;
 
 class AsistenciaController extends Controller
@@ -12,31 +12,31 @@ class AsistenciaController extends Controller
     public function index(Request $request)
     {
         $asistencias = asistencia::where('estado', 1)->get();
-        $profesors = Profesor::select('profesors.*')
-            ->where('profesors.estado', 1)
+        $estudiantes = Estudiante::select('estudiantes.*')
+            ->where('estudiantes.estado', 1)
             ->get();
 
-        $array_profesors[''] = 'Seleccione...';
-        foreach ($profesors as $value) {
-            $array_profesors[$value->user->id] = $value->nombre . ' ' . $value->paterno . ' ' . $value->materno;
+        $array_estudiantes[''] = 'Seleccione...';
+        foreach ($estudiantes as $value) {
+            $array_estudiantes[$value->user->id] = $value->nombre . ' ' . $value->paterno . ' ' . $value->materno;
         }
 
         if ($request->ajax()) {
-            $nom_profesor = $request->nom_profesor;
+            $nom_estudiante = $request->nom_estudiante;
             $mes = $request->mes;
             $anio = $request->anio;
             $array_dias = ['D', 'L', 'M', 'M', 'J', 'V', "S"];
             $fecha = $anio . '-' . $mes . '-01';
             $dias = date('t', \strtotime($fecha));
-            if ($nom_profesor != '') {
-                $profesors = Profesor::select('profesors.*')
-                    ->join('users', 'users.id', '=', 'profesors.user_id')
-                    ->where('profesors.estado', 1)
-                    ->where(DB::raw('CONCAT(profesors.nombre, profesors.paterno, profesors.materno)'), 'LIKE', "%$nom_profesor%")
+            if ($nom_estudiante != '') {
+                $estudiantes = Estudiante::select('estudiantes.*')
+                    ->join('users', 'users.id', '=', 'estudiantes.user_id')
+                    ->where('estudiantes.estado', 1)
+                    ->where(DB::raw('CONCAT(estudiantes.nombre, estudiantes.paterno, estudiantes.materno)'), 'LIKE', "%$nom_estudiante%")
                     ->get();
             }
 
-            $header = '<th colspan="2">Profesor</th>';
+            $header = '<th colspan="2">Estudiante</th>';
             for ($i = 1; $i <= $dias; $i++) {
                 $nro_dia = $i;
                 if ($nro_dia < 10) {
@@ -48,10 +48,10 @@ class AsistenciaController extends Controller
             }
 
             $fila_html = '';
-            foreach ($profesors as $profesor) {
+            foreach ($estudiantes as $estudiante) {
                 $fila_html .= '<tr>';
-                $fila_html .= '<td><img alt="" class="img-table" src="' . asset('imgs/users/' . $profesor->user->foto) . '"></td>
-                                <td>' . $profesor->nombre . ' ' . $profesor->paterno . ' ' . $profesor->materno . '
+                $fila_html .= '<td><img alt="" class="img-table" src="' . asset('imgs/users/' . $estudiante->user->foto) . '"></td>
+                                <td>' . $estudiante->nombre . ' ' . $estudiante->paterno . ' ' . $estudiante->materno . '
                                 </td>';
                 for ($i = 1; $i <= $dias; $i++) {
                     if ($i < 10) {
@@ -59,7 +59,7 @@ class AsistenciaController extends Controller
                     } else {
                         $fecha = $anio . '-' . $mes . '-' . $i;
                     }
-                    $asistencia = Asistencia::where('user_id', $profesor->user->id)
+                    $asistencia = Asistencia::where('user_id', $estudiante->user->id)
                         ->where('fecha', $fecha)->get()->first();
                     if ($asistencia) {
                         $fila_html .= '<td><i class="fa fa-check text-success"></i></td>';
@@ -81,7 +81,9 @@ class AsistenciaController extends Controller
         $gestion_max = Asistencia::max('fecha');
         $gestion_min = date('Y', strtotime($gestion_min));
         $gestion_max = date('Y', strtotime($gestion_max));
-
+        if ($gestion_max < date("Y")) {
+            $gestion_max = date("Y");
+        }
         $array_gestiones = [];
         if ($gestion_min) {
             $array_gestiones[''] = 'Seleccione...';
@@ -90,7 +92,7 @@ class AsistenciaController extends Controller
             }
         }
 
-        return view('asistencias.index', compact('asistencias', 'array_profesors', 'array_gestiones'));
+        return view('asistencias.index', compact('asistencias', 'array_estudiantes', 'array_gestiones'));
     }
 
     public function getAccion(Request $request)
@@ -128,7 +130,7 @@ class AsistenciaController extends Controller
         }
         $request['estado'] = 1;
 
-        if($accion != ''){
+        if ($accion != '') {
             if ($accion == 'SALIDA') {
                 // buscar el registro
                 $asistencia = Asistencia::where('user_id', $request->user_id)

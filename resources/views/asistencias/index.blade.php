@@ -35,8 +35,8 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Seleccionar profesor</label>
-                                    {{Form::select('user_id',$array_profesors,null,['class'=>'form-control','id'=>'select_profesor'])}}
+                                    <label>Seleccionar estudiante</label>
+                                    {{Form::select('user_id',$array_estudiantes,null,['class'=>'form-control','id'=>'select_estudiante'])}}
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -67,7 +67,7 @@
                         <h3 class="card-title font-weight-bold">Asistencias</h3><br>
                         <div class="row">
                             <div class="col-md-4">
-                                {{Form::text('txtNomProfesor',null,['class'=>'form-control','id'=>'txtNomProfesor','placeholder'=>'Nombre Profesor'])}}
+                                {{Form::text('txtNomEstudiante',null,['class'=>'form-control','id'=>'txtNomEstudiante','placeholder'=>'Nombre estudiante'])}}
                             </div>
                             <div class="col-md-4">
                                 {{Form::select('selectMes',[
@@ -134,7 +134,7 @@
 
     reloj();
     setInterval(reloj,1000);
-    $('#select_profesor').change(function(){
+    $('#select_estudiante').change(function(){
         if($(this).val() != ''){
             $('#accion').val('...');
             $.ajax({
@@ -142,7 +142,7 @@
                 url: $('#urlGetAccion').val(),
                 data: {
                     fecha : $('#fecha').val(),
-                    user_id : $('#select_profesor').val()
+                    user_id : $('#select_estudiante').val()
                 },
                 dataType: "json",
                 success: function (response) {
@@ -150,7 +150,7 @@
                         $('#accion').val(response);
                     }else{
                         $('#accion').val('');
-                        mensajeNotificacion('El profesor que seleccionó ya tiene su Ingreso y Salida registrados.','info');
+                        mensajeNotificacion('El estudiante que seleccionó ya tiene su Ingreso y Salida registrados.','info');
                     }
                 }
             });

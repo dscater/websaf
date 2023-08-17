@@ -100,6 +100,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('estudiantes/getInfoPadreTutor', 'EstudianteController@getInfoPadreTutor')->name('estudiantes.getInfoPadreTutor');
 
+    Route::get('estudiantes/asistencias/{estudiante}', 'EstudianteController@asistencias')->name('estudiantes.asistencias');
+
     // CAMPOS
     Route::get('campos', 'CampoController@index')->name('campos.index');
 

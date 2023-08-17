@@ -55,6 +55,7 @@
                                     <td>{{$estudiante->provincia}}, {{$estudiante->zona_dir}} {{$estudiante->municipio_dir}} {{$estudiante->avenida_dir}} {{$estudiante->localidad_dir}} {{$estudiante->nro_dir}}</td>
                                     <td>{{$estudiante->ap_padre_tutor}} {{$estudiante->nom_padre_tutor}}</td>
                                     <td class="btns-opciones">
+                                        <a href="{{route('estudiantes.asistencias',$estudiante->id)}}" class="ir-evaluacion"><i class="far fa-list-alt" data-toggle="tooltip" data-placement="left" title="Asistencias"></i></a>
                                         @if(Auth::user()->tipo == 'ADMINISTRADOR')
                                         <a href="{{route('estudiantes.edit',$estudiante->id)}}" class="modificar"><i class="fa fa-edit" data-toggle="tooltip" data-placement="left" title="Modificar"></i></a>
     

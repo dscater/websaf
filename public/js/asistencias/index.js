@@ -1,4 +1,4 @@
-let txtNomProfesor = $('#txtNomProfesor');
+let txtNomEstudiante = $('#txtNomEstudiante');
 let selectMes = $('#selectMes');
 let selectAnio = $('#selectAnio');
 let contenedorAsistencias = $('#contenedorAsistencias');
@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     selectMes.change(obtieneAsistencias);
     selectAnio.change(obtieneAsistencias);
-    txtNomProfesor.keyup(obtieneAsistencias);
+    txtNomEstudiante.keyup(obtieneAsistencias);
 });
 
 function obtieneAsistencias() {
@@ -17,7 +17,7 @@ function obtieneAsistencias() {
         type: "GET",
         url: $('#urlAsistencias').val(),
         data: {
-            nom_profesor: txtNomProfesor.val(),
+            nom_estudiante: txtNomEstudiante.val(),
             mes: selectMes.val(),
             anio: selectAnio.val()
         },
