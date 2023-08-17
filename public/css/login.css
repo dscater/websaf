@@ -1,0 +1,42 @@
+body{
+    /* background-image: url('../imgs/fondo.jpg')!important; */
+    background-size: cover!important;
+    background-position: center!important;
+    background-repeat: no-repeat!important;
+    /* background:rgb(108, 199, 108)!important; */
+}
+
+.login-box{
+    margin-top: -50px!important;
+    border:solid 3px rgb(5, 108, 204);
+    height: auto;
+    box-shadow: -3px 3px 20px 3px rgb(5, 108, 204);   
+}
+
+.card{
+    margin-bottom: 0px;
+}
+
+.login-card-body{
+    color:white;
+    background:rgb(5, 108, 204)!important; 
+}
+
+.input-group-text{
+    color:white!important;
+}
+
+.login-logo{
+    margin-bottom: 0px;
+    background:rgb(5, 108, 204)!important; 
+}
+
+.login-logo a{
+    color:white;
+}
+
+.login-logo img{
+    height: 150px;
+    width: 90%;
+    max-width: 100%;
+}

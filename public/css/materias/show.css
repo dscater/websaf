@@ -1,0 +1,263 @@
+#malla_curricular {
+    width: 100%;
+}
+
+#malla_curricular>.header {
+    display: flex;
+}
+
+#malla_curricular>.body {
+    display: flex;
+}
+
+#malla_curricular>.header>.campo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 145px;
+    border-left: solid 1px black;
+    border-top: solid 1px black;
+    font-weight: bold;
+    background: rgb(0, 119, 255);
+    color: white;
+}
+
+#malla_curricular>.header>.area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 290px;
+    width: 290px;
+    border-left: solid 1px black;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    font-weight: bold;
+    background: rgb(0, 119, 255);
+    color: white;
+}
+
+#malla_curricular>.header>.valoracion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 150px;
+    width: 150px;
+    border-left: solid 1px black;
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    font-weight: bold;
+    background: rgb(0, 119, 255);
+    color: white;
+}
+
+#malla_curricular>.header>.nivel {
+    text-align: center;
+    padding: 0px;
+    border-left: solid 1px black;
+    border-top: solid 1px black;
+    font-weight: bold;
+    background: rgb(0, 119, 255);
+    color: white;
+}
+
+#malla_curricular>.header>.nivel .texto {
+    border-bottom: solid 1px black;
+}
+
+#malla_curricular>.header>.nivel:last-child {
+    border-right: solid 1px black;
+}
+
+#malla_curricular>.header>.nivel>.contenedor_grados {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#malla_curricular>.header>.nivel>.contenedor_grados>.grado {
+    font-size: 9pt;
+    text-align: center;
+    width: 30px;
+    border-right: solid 1px black;
+    border-bottom: solid 1px black;
+
+}
+
+#malla_curricular>.header>.nivel>.contenedor_grados>.total {
+    font-size: 9pt;
+    width: 54px;
+    border-bottom: solid 1px black;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo {
+    display: flex;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 145px;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+    font-weight: bold;
+    text-align: center;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo:first-child>.titulo {
+    border-top: solid 1px black;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas {
+    display: flex;
+    flex-direction: column;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area {
+    display: flex;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas .area>.titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 145px;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area>.contenedor_materias>.materia {
+    display: flex;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area>.contenedor_materias>.materia>.titulo {
+    text-align: center;
+    width: 145px;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+    font-size: 0.75em;
+}
+
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area>.contenedor_materias>.materia>.nivel {
+    display: flex;
+    text-align: center;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area>.contenedor_materias>.materia>.nivel>.horas_grado {
+    font-size: 9pt;
+    text-align: center;
+    width: 30px;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area>.contenedor_materias>.materia>.nivel>.total {
+    font-size: 9pt;
+    width: 55px;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+}
+
+#malla_curricular>.body>.contenedor_campos>.campo>.contenedor_areas>.area>.contenedor_materias>.materia>.nivel:last-child>.total {
+    border-right: solid 1px black;
+}
+
+.campo>.titulo {
+    background: rgb(228, 182, 97);
+    background: rgb(240, 205, 180);
+}
+
+.total {
+    background: rgb(187, 153, 252) !important;
+    color: black;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.sin_materia {
+    color: rgb(160, 159, 159);
+    font-size: 8pt
+}
+
+.materia.subtotal_h {
+    background: rgb(228, 182, 97);
+}
+
+.materia.subtotal_h>.nivel .horas_grado,
+.materia.subtotal_h>.nivel .total {
+    background: rgb(228, 182, 97);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-weight: bold !important;
+}
+
+.campo.sub_total>.titulo {
+    width: 436px !important;
+    border-right: solid 1px black;
+}
+
+.campo.sub_total>.nivel {
+    text-align: center;
+    display: flex;
+}
+
+.campo.sub_total>.nivel>.horas_grado {
+    font-size: 9pt;
+    text-align: center;
+    width: 30px;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.campo.sub_total>.nivel>.horas_grado:first-child {
+    border-left: none;
+}
+
+.campo.sub_total.total {
+    color: black;
+}
+
+.campo.sub_total.total .titulo {
+    background: rgb(187, 153, 252);
+}
+
+.campo.sub_total .titulo {
+    background: rgb(228, 182, 97);
+}
+
+.campo.sub_total>.nivel {
+    background: rgb(228, 182, 97);
+}
+
+.campo.sub_total>.nivel .horas_grado,
+.campo.sub_total>.nivel .total {
+    font-weight: bold;
+    background: rgb(228, 182, 97);
+    color: black;
+}
+
+.campo.sub_total>.nivel>.total {
+    font-size: 9pt;
+    width: 54px;
+    border-bottom: solid 1px black;
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+}
+
+.campo.sub_total.total>.nivel .horas_grado {
+    font-weight: bold;
+    background: rgb(187, 153, 252);
+    color: black;
+}

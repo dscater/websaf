@@ -1,0 +1,54 @@
+.tabla_calificacions thead tr th {
+    font-size: 0.75em;
+}
+
+.tabla_calificacions thead tr th.vertical {
+    padding: 0px !important;
+}
+
+.tabla_calificacions thead tr th.vertical>div {
+    position: relative;
+    transform: rotate(270deg) !important;
+    top: -30px;
+}
+
+.tabla_calificacions tbody tr.fila {
+    transition: 0.2s all;
+}
+
+.tabla_calificacions tbody tr.fila.correcto {
+    background: rgb(101, 235, 161);
+    border: solid 2px rgb(0, 158, 53)!important;
+}
+
+.tabla_calificacions tbody tr.fila.correcto:hover {
+    background: rgb(101, 235, 161);
+    border: solid 2px rgb(0, 158, 53)!important;
+}
+
+.tabla_calificacions tbody tr.fila:hover {
+    background: rgb(187, 216, 250);
+    border: solid 2px rgb(37, 104, 180);
+}
+
+.tabla_calificacions tbody tr td {
+    padding: 3px !important;
+    font-size: 0.65em;
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.tabla_calificacions tbody tr td.promedio,
+.tabla_calificacions tbody tr td.promedio_final {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.tabla_calificacions tbody tr td.calificacion {
+    padding: 0px !important;
+}
+
+.tabla_calificacions tbody tr td input {
+    font-size: 1.3em;
+    width: 45px;
+}

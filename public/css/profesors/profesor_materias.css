@@ -1,0 +1,49 @@
+.foto_profesor{
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px!important;
+}
+
+.foto_profesor img{
+    width: 80px;
+}
+
+#contenedor_materias > .materia label{
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    border:solid 2px rgb(114, 114, 114);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#contenedor_materias > .materia label:hover{
+    background:rgb(117, 188, 221);
+    color:rgb(5, 63, 129);
+}
+
+#contenedor_materias > .materia.asignado label{
+    background:rgb(19, 104, 161);
+    color:white;
+}
+
+#contenedor_materias > .materia.no_disponible label{
+    background:rgb(151, 151, 151)!important;
+    cursor: unset;
+}
+
+#contenedor_materias > .materia.correcto label{
+    background:rgb(67, 180, 104);
+}
+
+#contenedor_materias > .materia .nombre{
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+#contenedor_materias > .materia input{
+    margin-left: 5px;
+    width: 18px;
+    height: 18px;
+}
