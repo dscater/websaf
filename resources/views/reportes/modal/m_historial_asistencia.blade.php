@@ -17,6 +17,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
+                            <label>Estudiante:</label>
+                            {{ Form::select('estudiante', $array_estudiantes2, null, ['class' => 'form-control select2', 'required']) }}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Seleccione Gestión:</label>
                             {{ Form::select('anio', $array_gestiones, date('Y'), ['class' => 'form-control']) }}
                         </div>

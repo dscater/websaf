@@ -40,28 +40,30 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-6 mr-auto">
-                                    <label>Seleccione Mes*</label>
-                                    {{ Form::select(
-                                        'selectMes',
-                                        [
-                                            '01' => 'Enero',
-                                            '02' => 'Febrero',
-                                            '03' => 'Marzo',
-                                            '04' => 'Abril',
-                                            '05' => 'Mayo',
-                                            '06' => 'Junio',
-                                            '07' => 'Julio',
-                                            '08' => 'Agosto',
-                                            '09' => 'Septiembre',
-                                            '10' => 'Octubre',
-                                            '11' => 'Noviembre',
-                                            '12' => 'Diciembre',
-                                        ],
-                                        date('m'),
-                                        ['class' => 'form-control', 'id' => 'selectMes'],
-                                    ) }}
+                                    <div class="form-group">
+                                        <label>Seleccione Mes*</label>
+                                        {{ Form::select(
+                                            'selectMes',
+                                            [
+                                                '01' => 'Enero',
+                                                '02' => 'Febrero',
+                                                '03' => 'Marzo',
+                                                '04' => 'Abril',
+                                                '05' => 'Mayo',
+                                                '06' => 'Junio',
+                                                '07' => 'Julio',
+                                                '08' => 'Agosto',
+                                                '09' => 'Septiembre',
+                                                '10' => 'Octubre',
+                                                '11' => 'Noviembre',
+                                                '12' => 'Diciembre',
+                                            ],
+                                            date('m'),
+                                            ['class' => 'form-control', 'id' => 'selectMes'],
+                                        ) }}
+                                    </div>
                                 </div>
-                                <div class="col-md-12 col-sm-12">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label>Seleccione Materia*</label>
                                         {{ Form::select('materia', [], date('Y'), ['class' => 'form-control', 'required', 'id' => 'select_materia']) }}
@@ -71,107 +73,112 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-body">
-                            <table class="asistencias table table-bordered custom-table table-nowrap mb-0">
-                                <thead>
-                                    <tr id="header_asistencias">
-
-                                    </tr>
-                                </thead>
-                                <tbody id="contenedorAsistencias">
-                                    <tr>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td>
-                                            <div class="half-day">
-                                                <span class="first-off"><a href="javascript:void(0);" data-toggle="modal"
-                                                        data-target="#attendance_info"><i
-                                                            class="fa fa-check text-success"></i></a></span>
-                                                <span class="first-off"><i class="fa fa-close text-danger"></i></span>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><i class="fa fa-close text-danger"></i> </td>
-                                        <td><i class="fa fa-close text-danger"></i> </td>
-                                        <td><i class="fa fa-close text-danger"></i> </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><i class="fa fa-close text-danger"></i> </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
-                                        </td>
-                                        <td>
-                                            <div class="half-day">
-                                                <span class="first-off"><i class="fa fa-close text-danger"></i></span>
-                                                <span class="first-off"><a href="javascript:void(0);" data-toggle="modal"
-                                                        data-target="#attendance_info"><i
-                                                            class="fa fa-check text-success"></i></a></span>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                        <td><i class="fa fa-close text-danger"></i> </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                        <td><i class="fa fa-close text-danger"></i> </td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                        <td><a href="javascript:void(0);" data-toggle="modal"
-                                                data-target="#attendance_info"><i
-                                                    class="fa fa-check text-success"></i></a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>Asistencias <span id="txt_gestion"></span></h4>
+                                </div>
+                            </div>
                         </div>
+                        <table class="card-body asistencias table table-bordered custom-table table-nowrap mb-0">
+                            <thead>
+                                <tr id="header_asistencias">
+
+                                </tr>
+                            </thead>
+                            <tbody id="contenedorAsistencias">
+                                {{-- <tr>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td>
+                                            <div class="half-day">
+                                                <span class="first-off"><a href="javascript:void(0);" data-toggle="modal"
+                                                        data-target="#attendance_info"><i
+                                                            class="fa fa-check text-success"></i></a></span>
+                                                <span class="first-off"><i class="fa fa-close text-danger"></i></span>
+                                            </div>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><i class="fa fa-close text-danger"></i> </td>
+                                        <td><i class="fa fa-close text-danger"></i> </td>
+                                        <td><i class="fa fa-close text-danger"></i> </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><i class="fa fa-close text-danger"></i> </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i class="fa fa-check text-success"></i></a>
+                                        </td>
+                                        <td>
+                                            <div class="half-day">
+                                                <span class="first-off"><i class="fa fa-close text-danger"></i></span>
+                                                <span class="first-off"><a href="javascript:void(0);" data-toggle="modal"
+                                                        data-target="#attendance_info"><i
+                                                            class="fa fa-check text-success"></i></a></span>
+                                            </div>
+                                        </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                        <td><i class="fa fa-close text-danger"></i> </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                        <td><i class="fa fa-close text-danger"></i> </td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                        <td><a href="javascript:void(0);" data-toggle="modal"
+                                                data-target="#attendance_info"><i
+                                                    class="fa fa-check text-success"></i></a></td>
+                                    </tr> --}}
+                            </tbody>
+                        </table>
                     </div>
                     <!-- /.card -->
                 </div>

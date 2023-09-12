@@ -314,10 +314,15 @@ class MateriaController extends Controller
             ->where('gestion', $gestion)
             ->get();
 
-        $html = '<option value="">Seleccione...</option>';
-        foreach ($materias as $materia) {
-            $html .= '<option value="' . $materia->id . '">' . $materia->materia->nombre . ' | ' . $materia->nivel . ' - ' . $materia->grado . 'º ' . $materia->paralelo->paralelo . ' | ' . $materia->turno . '</option>';
+        if (count($materias) > 0) {
+            $html = '<option value="">Seleccione...</option>';
+            foreach ($materias as $materia) {
+                $html .= '<option value="' . $materia->id . '">' . $materia->materia->nombre . ' | ' . $materia->nivel . ' - ' . $materia->grado . 'º ' . $materia->paralelo->paralelo . ' | ' . $materia->turno . '</option>';
+            }
+        } else {
+            $html = '<option value="">- No tiene materias asignadas en la gestión seleccionada -</option>';
         }
+
 
         return response()->JSON($html);
     }

@@ -84,6 +84,10 @@ class ReporteController extends Controller
         foreach ($estudiantes as $value) {
             $array_estudiantes[$value->id] = $value->nombre . ' ' . $value->paterno . ' ' . $value->materno;
         }
+        $array_estudiantes2[''] = 'Seleccione...';
+        foreach ($estudiantes as $value) {
+            $array_estudiantes2[$value->id] = $value->nombre . ' ' . $value->paterno . ' ' . $value->materno . ' | ' . $value->nro_doc;
+        }
 
         $gestion_min = Inscripcion::min('gestion');
         $gestion_max = Inscripcion::max('gestion');
@@ -96,7 +100,7 @@ class ReporteController extends Controller
             }
         }
 
-        return view('reportes.index', compact('usuarios', 'array_gestiones', 'array_gestiones_insc', 'array_personal', 'array_paralelos', 'array_estudiantes', 'array_profesors'));
+        return view('reportes.index', compact('usuarios', 'array_gestiones', 'array_gestiones_insc', 'array_personal', 'array_paralelos', 'array_estudiantes', 'array_estudiantes2', 'array_profesors'));
     }
 
     public function usuarios(Request $request)
@@ -763,7 +767,9 @@ class ReporteController extends Controller
     public function historial_asistencia(Request $request)
     {
         $anio = $request->anio;
+        $estudiante = $request->estudiante;
         $estudiantes = Estudiante::select('estudiantes.*')
+            ->where('estudiantes.id', $estudiante)
             ->where('estudiantes.estado', 1)
             ->get();
 

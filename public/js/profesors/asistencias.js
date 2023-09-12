@@ -3,19 +3,22 @@ let selectAnio = $("#selectAnio");
 let contenedorAsistencias = $("#contenedorAsistencias");
 let header_asistencias = $("#header_asistencias");
 let select_materia = $("#select_materia");
+let txt_gestion = $("#txt_gestion");
 $(document).ready(function () {
     obtieneMaterias();
     obtieneAsistencias();
     select_materia.change(obtieneAsistencias);
 
     selectAnio.change(function () {
+        txt_gestion.text(selectAnio.val());
         obtieneMaterias();
         obtieneAsistencias();
     });
 });
 
 function obtieneAsistencias() {
-    console.log(select_materia.val());
+    // console.log(select_materia.val());
+    txt_gestion.text(selectAnio.val());
     if (select_materia.val() && select_materia.val() != "") {
         $.ajax({
             type: "GET",
@@ -39,6 +42,7 @@ function obtieneAsistencias() {
 }
 
 function obtieneMaterias() {
+    txt_gestion.text(selectAnio.val());
     if (selectAnio.val() != "") {
         $.ajax({
             type: "GET",
