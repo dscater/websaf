@@ -15,6 +15,8 @@ use App\ProfesorOtro;
 use App\ProfesorTrabajo;
 use App\User;
 use App\Asistencia;
+use App\Estudiante;
+use App\ProfesorMateria;
 
 class ProfesorController extends Controller
 {
@@ -30,15 +32,27 @@ class ProfesorController extends Controller
     {
 
         if ($request->ajax()) {
+            $materia = $request->materia;
             $mes = $request->mes;
             $anio = $request->anio;
-            $fecha = $anio . '-' . $mes . '-01';
             $array_dias = ['D', 'L', 'M', 'M', 'J', 'V', "S"];
-
+            $fecha = $anio . '-' . $mes . '-01';
             $dias = date('t', \strtotime($fecha));
+            $profesor_materia = ProfesorMateria::find($materia);
+            $estudiantes = Estudiante::select('estudiantes.*')
+                ->join('users', 'users.id', '=', 'estudiantes.user_id')
+                ->join('inscripcions', 'inscripcions.estudiante_id', '=', 'estudiantes.id')
+                ->join('calificacions', 'calificacions.inscripcion_id', '=', 'inscripcions.id')
+                ->where('calificacions.materia_id', $profesor_materia->materia_id)
+                ->where('inscripcions.nivel', $profesor_materia->nivel)
+                ->where('inscripcions.grado', $profesor_materia->grado)
+                ->where('inscripcions.paralelo_id', $profesor_materia->paralelo_id)
+                ->where('inscripcions.turno', $profesor_materia->turno)
+                ->where('inscripcions.gestion', $anio)
+                ->where('inscripcions.status', 1)
+                ->get();
 
-            $header = '';
-            $dias_html = '<tr>';
+            $header = '<th colspan="2">Estudiante</th>';
             for ($i = 1; $i <= $dias; $i++) {
                 $nro_dia = $i;
                 if ($nro_dia < 10) {
@@ -46,28 +60,36 @@ class ProfesorController extends Controller
                 }
                 $fecha_dia = $anio . '-' . $mes . '-' . $nro_dia;
                 $txt_dia = date('w', strtotime($fecha_dia));
-
                 $header .= '<th>' . $i . '<br>' . $array_dias[$txt_dia] . '</th>';
-                if ($i < 10) {
-                    $fecha = $anio . '-' . $mes . '-0' . $i;
-                } else {
-                    $fecha = $anio . '-' . $mes . '-' . $i;
-                }
-
-                $asistencia = Asistencia::where('user_id', $profesor->user->id)
-                    ->where('fecha', $fecha)->get()->first();
-                if ($asistencia) {
-                    $dias_html .= '<td><i class="fa fa-check text-success"></i></td>';
-                } else {
-                    $dias_html .= '<td><i class="fa fa-times text-danger"></i></td>';
-                }
             }
-            $dias_html .= '</tr>';
+
+            $fila_html = '';
+            foreach ($estudiantes as $estudiante) {
+                $fila_html .= '<tr>';
+                $fila_html .= '<td><img alt="" class="img-table" src="' . asset('imgs/users/' . $estudiante->user->foto) . '"></td>
+                                <td>' . $estudiante->nombre . ' ' . $estudiante->paterno . ' ' . $estudiante->materno . '
+                                </td>';
+                for ($i = 1; $i <= $dias; $i++) {
+                    if ($i < 10) {
+                        $fecha = $anio . '-' . $mes . '-0' . $i;
+                    } else {
+                        $fecha = $anio . '-' . $mes . '-' . $i;
+                    }
+                    $asistencia = Asistencia::where('user_id', $estudiante->user->id)
+                        ->where('fecha', $fecha)->get()->first();
+                    if ($asistencia) {
+                        $fila_html .= '<td><i class="fa fa-check text-success"></i></td>';
+                    } else {
+                        $fila_html .= '<td><i class="fa fa-times text-danger"></i></td>';
+                    }
+                }
+                $fila_html .= '</tr>';
+            }
 
             return response()->JSON([
                 'sw' => true,
                 'header' => $header,
-                'dias' => $dias_html,
+                'filas' => $fila_html
             ]);
         }
 
@@ -83,7 +105,6 @@ class ProfesorController extends Controller
                 $array_gestiones[$i] = $i;
             }
         }
-
         return view('profesors.asistencias', compact('profesor', 'array_gestiones'));
     }
 

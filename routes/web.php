@@ -272,4 +272,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reportes/ingresos_economicos', 'ReporteController@ingresos_economicos')->name('reportes.ingresos_economicos');
 
     Route::get('reportes/asistencias', 'ReporteController@asistencias')->name('reportes.asistencias');
+
+    Route::get('reportes/historial_asistencia', 'ReporteController@historial_asistencia')->name('reportes.historial_asistencia');
 });

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 17-08-2023 a las 23:31:09
+-- Tiempo de generación: 12-09-2023 a las 05:02:41
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -42,7 +42,7 @@ CREATE TABLE `administrativos` (
   `zona` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `avenida` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nro` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fono` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fono` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cel` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nro_rda` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -73,7 +73,8 @@ INSERT INTO `administrativos` (`id`, `nombre`, `paterno`, `materno`, `ci`, `ci_e
 (2, 'MARIA', 'PAREDES', '', '1234567', 'LP', 'PROVINCIA MURILLO', '1995-01-01', 26, 'F', 'SOLTERO', 'ZONA LOS OLIVOS', 'AV. SUCRE', '123', '2314567', '78945612', '', '123', '123', '123', '123', '123', 'CAJA DE SEGURO SOCIAL', '2DA FASE', '', '', '', '', 'user_default.png', '2022-03-28', 16, 1, '2021-05-06 15:27:26', '2022-03-28 18:37:51'),
 (3, 'JANETH', 'MAMANI', 'MAMANI', '123456', 'LP', 'PROVINCIA MURILLO', '1994-01-01', 27, 'F', 'SOLTERO', 'ZONA LOS OLIVOS', 'AV. SUCRE', '123', '2314567', '78945612', '', '123', '123', '123', '123', '123', 'CAJA DE SEGURO SOCIAL', '3RA FASE', '', '', '', '', 'user_default.png', '2021-05-06', 3, 1, '2021-05-06 16:36:55', '2021-05-06 16:40:37'),
 (4, 'ALEX', 'FLORES', 'GOMEZ', '111111', 'LP', 'PROVINCIA MURILLO', '1990-01-01', 31, 'M', 'SOLTERO', 'ZONA LOS OLIVOS', 'AV. SUCRE', '123', '2314567', '78945612', '', '123', '123', '123', '123', '123', 'CAJA DE SEGURO SOCIAL', '1RA FASE', '', '', '', '', 'user_default.png', '2021-05-18', 10, 1, '2021-05-18 16:03:43', '2021-05-18 16:03:43'),
-(5, 'CARLOS', 'PAREDES', 'PACO', '102030', 'LP', 'LA PAZ', '1992-02-10', 29, 'M', 'SOLTERO', 'ZONA CENTRAL CALLE 2', 'AVENIDA CENTRAL', '525', '2885656', '76588587', '', '585522', '652325232', '352352', '6353235652', '652352320', '33352541', '1RA FASE', 'NINGUNO A', 'NINGUNO B', 'A', 'X', 'user_default.png', '2021-06-07', 13, 1, '2021-06-07 23:39:58', '2021-06-07 23:39:58');
+(5, 'CARLOS', 'PAREDES', 'PACO', '102030', 'LP', 'LA PAZ', '1992-02-10', 29, 'M', 'SOLTERO', 'ZONA CENTRAL CALLE 2', 'AVENIDA CENTRAL', '525', '2885656', '76588587', '', '585522', '652325232', '352352', '6353235652', '652352320', '33352541', '1RA FASE', 'NINGUNO A', 'NINGUNO B', 'A', 'X', 'user_default.png', '2021-06-07', 13, 1, '2021-06-07 23:39:58', '2021-06-07 23:39:58'),
+(6, 'JOSE LUIS', 'PAREDES', 'SOLIZ', '123123', 'CB', 'LA PAZ', '1994-01-22', 29, 'M', 'SOLTERO', 'LOS OLIVOS', 'AV. ROBLES', '22', '', '7777', '', '123123', '123', '123', '123', '123', 'SERGURO', '1RA FASE', '', '', '', '', 'user_default.png', '2023-09-11', NULL, 1, '2023-09-12 03:50:07', '2023-09-12 03:50:07');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,10 @@ INSERT INTO `administrativo_cursos` (`id`, `administrativo_id`, `nominacion`, `i
 (12, 4, '', '', '', '0000-00-00', '2021-05-18 16:03:43', '2021-05-18 16:03:43'),
 (13, 5, 'CONTABILIDAD', 'CATÓLICA', '12 MESES', '2016-06-09', '2021-06-07 23:39:58', '2021-06-07 23:39:58'),
 (14, 5, '', '', '', '0000-00-00', '2021-06-07 23:39:58', '2021-06-07 23:40:21'),
-(15, 5, '', '', '', '0000-00-00', '2021-06-07 23:39:58', '2021-06-07 23:40:21');
+(15, 5, '', '', '', '0000-00-00', '2021-06-07 23:39:58', '2021-06-07 23:40:21'),
+(16, 6, '', '', '', '0000-00-00', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(17, 6, '', '', '', '0000-00-00', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(18, 6, '', '', '', '0000-00-00', '2023-09-12 03:50:07', '2023-09-12 03:50:07');
 
 -- --------------------------------------------------------
 
@@ -160,7 +164,12 @@ INSERT INTO `administrativo_estudios` (`id`, `administrativo_id`, `nivel`, `inst
 (22, 5, 'NORMAL', '', '', '', '', '2021-06-07 23:39:58', '2021-06-07 23:40:21'),
 (23, 5, 'UNIVERSITARIO', '', '', '', '', '2021-06-07 23:39:58', '2021-06-07 23:40:21'),
 (24, 5, 'POST GRADO', '', '', '', '', '2021-06-07 23:39:58', '2021-06-07 23:40:21'),
-(25, 5, 'POST GRADO', '', '', '', '', '2021-06-07 23:39:58', '2021-06-07 23:40:21');
+(25, 5, 'POST GRADO', '', '', '', '', '2021-06-07 23:39:58', '2021-06-07 23:40:21'),
+(26, 6, 'Secundario', '', '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(27, 6, 'Normal', '', '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(28, 6, 'Universitario', '', '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(29, 6, 'Post Grado', '', '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(30, 6, 'Post Grado', '', '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07');
 
 -- --------------------------------------------------------
 
@@ -199,7 +208,10 @@ INSERT INTO `administrativo_otros` (`id`, `administrativo_id`, `institucion`, `t
 (12, 4, '', '', '', '', 0, '2021-05-18 16:03:43', '2021-05-18 16:03:43'),
 (13, 5, 'X', 'X', 'X', 'X', 0, '2021-06-07 23:39:58', '2021-06-07 23:40:22'),
 (14, 5, '', '', '', '', 0, '2021-06-07 23:39:59', '2021-06-07 23:39:59'),
-(15, 5, '', '', '', '', 0, '2021-06-07 23:39:59', '2021-06-07 23:39:59');
+(15, 5, '', '', '', '', 0, '2021-06-07 23:39:59', '2021-06-07 23:39:59'),
+(16, 6, '', '', '', '', 0, '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(17, 6, '', '', '', '', 0, '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(18, 6, '', '', '', '', 0, '2023-09-12 03:50:07', '2023-09-12 03:50:07');
 
 -- --------------------------------------------------------
 
@@ -236,7 +248,10 @@ INSERT INTO `administrativo_trabajos` (`id`, `administrativo_id`, `institucion`,
 (12, 4, '', '', '', '2021-05-18 16:03:44', '2021-05-18 16:03:44'),
 (13, 5, 'X', 'X', 'X', '2021-06-07 23:39:59', '2021-06-07 23:39:59'),
 (14, 5, '', '', '', '2021-06-07 23:39:59', '2021-06-07 23:39:59'),
-(15, 5, '', '', '', '2021-06-07 23:39:59', '2021-06-07 23:39:59');
+(15, 5, '', '', '', '2021-06-07 23:39:59', '2021-06-07 23:39:59'),
+(16, 6, '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(17, 6, '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07'),
+(18, 6, '', '', '', '2023-09-12 03:50:07', '2023-09-12 03:50:07');
 
 -- --------------------------------------------------------
 
@@ -290,6 +305,13 @@ CREATE TABLE `asistencias` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `asistencias`
+--
+
+INSERT INTO `asistencias` (`id`, `user_id`, `hora_ingreso`, `hora_salida`, `fecha`, `observacion`, `estado`, `created_at`, `updated_at`) VALUES
+(1, 5, '00:15:07', '01:00:48', '2023-09-12', '', 1, '2023-09-12 04:15:07', '2023-09-12 05:00:48');
+
 -- --------------------------------------------------------
 
 --
@@ -320,7 +342,9 @@ INSERT INTO `calificacions` (`id`, `inscripcion_id`, `materia_id`, `nota_final`,
 (6, 4, 3, 0.00, 'REPROBADO', '2021-06-07', '2021-06-08 00:18:06', '2021-06-08 00:18:06'),
 (7, 4, 5, 0.00, 'REPROBADO', '2021-06-07', '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
 (8, 4, 7, 0.00, 'REPROBADO', '2021-06-07', '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
-(9, 4, 9, 0.00, 'REPROBADO', '2021-06-07', '2021-06-08 00:18:07', '2021-06-08 00:18:07');
+(9, 4, 9, 0.00, 'REPROBADO', '2021-06-07', '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
+(10, 5, 8, 1.00, 'REPROBADO', '2023-09-12', '2023-09-12 04:41:07', '2023-09-12 04:58:05'),
+(11, 6, 8, 1.00, 'REPROBADO', '2023-09-12', '2023-09-12 04:41:34', '2023-09-12 04:58:09');
 
 -- --------------------------------------------------------
 
@@ -368,7 +392,13 @@ INSERT INTO `calificacion_trimestres` (`id`, `calificacion_id`, `trimestre`, `pr
 (24, 8, 3, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
 (25, 9, 1, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
 (26, 9, 2, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
-(27, 9, 3, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07');
+(27, 9, 3, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
+(28, 10, 1, 4.00, '2023-09-12 04:41:07', '2023-09-12 04:58:05'),
+(29, 10, 2, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(30, 10, 3, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(31, 11, 1, 3.00, '2023-09-12 04:41:34', '2023-09-12 04:58:09'),
+(32, 11, 2, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(33, 11, 3, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34');
 
 -- --------------------------------------------------------
 
@@ -509,7 +539,9 @@ INSERT INTO `inscripcions` (`id`, `estudiante_id`, `nivel`, `grado`, `paralelo_i
 (1, 1, 'NIVEL INICIAL', '1', 3, 'MAÑANA', 2021, 'REPROBADO', 1, '2021-05-17', '2021-05-17 16:31:21', '2021-05-17 16:31:21'),
 (2, 2, 'PRIMARIA', '1', 3, 'MAÑANA', 2021, 'REPROBADO', 1, '2021-05-17', '2021-05-17 16:32:10', '2021-05-17 16:32:10'),
 (3, 3, 'PRIMARIA', '1', 3, 'MAÑANA', 2021, 'REPROBADO', 1, '2021-05-17', '2021-05-17 16:32:19', '2021-05-17 16:32:19'),
-(4, 5, 'SECUNDARIA', '1', 3, 'MAÑANA', 2021, 'REPROBADO', 1, '2021-06-07', '2021-06-08 00:18:06', '2021-06-08 00:18:06');
+(4, 5, 'SECUNDARIA', '1', 3, 'MAÑANA', 2021, 'REPROBADO', 1, '2021-06-07', '2021-06-08 00:18:06', '2021-06-08 00:18:06'),
+(5, 1, 'NIVEL INICIAL', '1', 3, 'MAÑANA', 2023, 'REPROBADO', 1, '2023-09-12', '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(6, 3, 'NIVEL INICIAL', '1', 3, 'MAÑANA', 2023, 'REPROBADO', 1, '2023-09-12', '2023-09-12 04:41:34', '2023-09-12 04:41:34');
 
 -- --------------------------------------------------------
 
@@ -764,7 +796,7 @@ CREATE TABLE `profesors` (
   `zona` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `avenida` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nro` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fono` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fono` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cel` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nro_rda` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -915,7 +947,8 @@ INSERT INTO `profesor_materias` (`id`, `profesor_id`, `nivel`, `grado`, `paralel
 (12, 3, 'SECUNDARIA', '1', 3, 'MAÑANA', 2021, 7, '2021-05-17', '2021-05-17 15:22:27', '2021-05-17 15:22:27'),
 (13, 1, 'PRIMARIA', '1', 3, 'MAÑANA', 2021, 6, '2021-05-18', '2021-05-18 15:43:05', '2021-05-18 15:43:05'),
 (15, 5, 'SECUNDARIA', '2', 3, 'MAÑANA', 2021, 3, '2021-06-07', '2021-06-08 00:31:57', '2021-06-08 00:31:57'),
-(16, 5, 'SECUNDARIA', '2', 3, 'MAÑANA', 2021, 7, '2021-06-07', '2021-06-08 00:32:00', '2021-06-08 00:32:00');
+(16, 5, 'SECUNDARIA', '2', 3, 'MAÑANA', 2021, 7, '2021-06-07', '2021-06-08 00:32:00', '2021-06-08 00:32:00'),
+(17, 1, 'NIVEL INICIAL', '1', 3, 'MAÑANA', 2023, 8, '2023-09-12', '2023-09-12 04:40:50', '2023-09-12 04:40:50');
 
 -- --------------------------------------------------------
 
@@ -1164,7 +1197,31 @@ INSERT INTO `trimestre_actividads` (`id`, `ct_id`, `area`, `a1`, `a2`, `a3`, `a4
 (105, 27, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
 (106, 27, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
 (107, 27, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
-(108, 27, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07');
+(108, 27, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2021-06-08 00:18:07', '2021-06-08 00:18:07'),
+(109, 28, 1, 90.00, 0.00, 0.00, 0.00, 0.00, 0.00, 15.00, '2023-09-12 04:41:07', '2023-09-12 04:58:05'),
+(110, 28, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(111, 28, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(112, 28, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(113, 29, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(114, 29, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(115, 29, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(116, 29, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(117, 30, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(118, 30, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(119, 30, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(120, 30, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:07', '2023-09-12 04:41:07'),
+(121, 31, 1, 60.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10.00, '2023-09-12 04:41:34', '2023-09-12 04:58:09'),
+(122, 31, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(123, 31, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(124, 31, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(125, 32, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(126, 32, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(127, 32, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(128, 32, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(129, 33, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(130, 33, 2, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(131, 33, 3, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34'),
+(132, 33, 4, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2023-09-12 04:41:34', '2023-09-12 04:41:34');
 
 -- --------------------------------------------------------
 
@@ -1402,31 +1459,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `administrativos`
 --
 ALTER TABLE `administrativos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `administrativo_cursos`
 --
 ALTER TABLE `administrativo_cursos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `administrativo_estudios`
 --
 ALTER TABLE `administrativo_estudios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `administrativo_otros`
 --
 ALTER TABLE `administrativo_otros`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `administrativo_trabajos`
 --
 ALTER TABLE `administrativo_trabajos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `areas`
@@ -1438,19 +1495,19 @@ ALTER TABLE `areas`
 -- AUTO_INCREMENT de la tabla `asistencias`
 --
 ALTER TABLE `asistencias`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `calificacions`
 --
 ALTER TABLE `calificacions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `calificacion_trimestres`
 --
 ALTER TABLE `calificacion_trimestres`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `campos`
@@ -1468,7 +1525,7 @@ ALTER TABLE `estudiantes`
 -- AUTO_INCREMENT de la tabla `inscripcions`
 --
 ALTER TABLE `inscripcions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -1528,7 +1585,7 @@ ALTER TABLE `profesor_estudios`
 -- AUTO_INCREMENT de la tabla `profesor_materias`
 --
 ALTER TABLE `profesor_materias`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `profesor_otros`
@@ -1552,7 +1609,7 @@ ALTER TABLE `razon_socials`
 -- AUTO_INCREMENT de la tabla `trimestre_actividads`
 --
 ALTER TABLE `trimestre_actividads`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

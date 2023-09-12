@@ -1,72 +1,91 @@
 @extends('layouts.app')
 
 @section('css')
-<style>
-    table tbody tr td{
-        vertical-align: middle!important;
-        padding: 0px !important;
-    }
+    <style>
+        table tbody tr td {
+            vertical-align: middle !important;
+            padding: 0px !important;
+        }
 
-    table tbody tr td:nth-child(1){
-        padding-left: 5px!important;
-        font-weight: 700; 
-    }
-</style>
+        table tbody tr td:nth-child(1) {
+            padding-left: 5px !important;
+            font-weight: 700;
+        }
+    </style>
 @endsection
 
 @section('content')
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Administrativos</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right bg-white">
-                    <li class="breadcrumb-item"><a href="{{route('home')}}">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="{{route('administrativos.index')}}">Administrativos</a></li>
-                    <li class="breadcrumb-item active">Nuevo</li>
-                </ol>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Administrativos</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right bg-white">
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('administrativos.index') }}">Administrativos</a></li>
+                        <li class="breadcrumb-item active">Nuevo</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Nuevo Registro</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        {{Form::open(['route'=>'administrativos.store','method'=>'post','files'=>true])}}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Nuevo Registro</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            {{ Form::open(['route' => 'administrativos.store', 'method' => 'post', 'files' => true]) }}
                             @include('administrativos.form.form')
                             <button class="btn btn-info"><i class="fa fa-save"></i> GUARDAR</button>
-                        {{Form::close()}}
+                            {{ Form::close() }}
+                        </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-              <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-    </div>
-</section>
-@php
-    $script = '<script type="text/javascript">
-                window.onload = function() {
-                    document.getElementById("ci_exp").value = "'.old('ci_exp').'";
-                    document.getElementById("role_id").value = "'.old('role_id').'";
-                };
-            </script>';
-@endphp 
-{!! $script !!}
-@section('scripts')
-
+    </section>
 @endsection
 
+@section('scripts')
+    <script>
+        let fecha_nac = $("#fecha_nac");
+        let edad = $("#edad");
+        $(document).ready(function() {
+            fecha_nac.on("keyup change", function() {
+                if ($(this).val()) {
+                    edad.val(calcularEdad($(this).val()));
+                } else {
+                    edad.val("");
+                }
+            });
+        });
+
+        function calcularEdad(fechaNacimiento) {
+            // Parseamos la fecha de nacimiento
+            const fechaNac = new Date(fechaNacimiento);
+
+            // Obtenemos la fecha actual
+            const fechaActual = new Date();
+
+            // Calculamos la diferencia en milisegundos
+            const diferencia = fechaActual - fechaNac;
+
+            // Convertimos la diferencia en años
+            const edad = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 365.25));
+
+            return edad;
+        }
+    </script>
 @endsection

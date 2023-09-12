@@ -759,4 +759,30 @@ class ReporteController extends Controller
 
         return $pdf->stream('asistencias.pdf');
     }
+
+    public function historial_asistencia(Request $request)
+    {
+        $anio = $request->anio;
+        $estudiantes = Estudiante::select('estudiantes.*')
+            ->where('estudiantes.estado', 1)
+            ->get();
+
+        $historial_estudiante = [];
+        foreach ($estudiantes as $e) {
+            $asistencias = Asistencia::where("user_id", $e->user_id)
+                ->where("fecha", "LIKE", "$anio%")->orderBy("created_at", "asc")->get();
+            $historial_estudiante[$e->id] = $asistencias;
+        }
+
+        $pdf = PDF::loadView('reportes.historial_asistencia', compact('estudiantes', 'historial_estudiante', 'anio'))->setPaper('letter', 'portrait');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('historial_asistencias.pdf');
+    }
 }

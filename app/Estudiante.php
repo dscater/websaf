@@ -21,6 +21,13 @@ class Estudiante extends Model
         'fecha_registro', 'user_id', 'estado',
     ];
 
+    protected $appends = ["full_name"];
+
+    public function getFullNameAttribute()
+    {
+        return $this->nombre . ' ' . $this->paterno . ' ' . $this->materno;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
