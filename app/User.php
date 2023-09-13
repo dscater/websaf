@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     public function profesor()
     {
-        return $this->hasOne('App\Profesor', 'user_id', 'id');
+        return $this->hasOne(Profesor::class, 'user_id', 'id');
     }
 
     public function estudiante()

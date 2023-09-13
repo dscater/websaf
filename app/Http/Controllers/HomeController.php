@@ -64,7 +64,7 @@ class HomeController extends Controller
 
         $materias = 0;
         $asistencias = 0;
-        if (Auth::user()->tipo == 'PROFESOR') {
+        if (Auth::user()->tipo == 'PROFESOR' && Auth::user()->profesor) {
             $materias = count(ProfesorMateria::where('profesor_id', Auth::user()->profesor->id)
                 ->where('gestion', date('Y'))
                 ->get());

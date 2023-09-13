@@ -34,7 +34,7 @@
                         <div class="card-body">
                             @include('inscripcions.form.form')
                             
-                            <button class="btn btn-info"><i class="fa fa-save"></i> GUARDAR</button>
+                            <button class="btn btn-info" id="btnGuardar"><i class="fa fa-save"></i> GUARDAR</button>
                         </div>
                     {{Form::close()}}
                     <!-- /.card-body -->

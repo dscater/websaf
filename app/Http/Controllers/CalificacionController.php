@@ -39,6 +39,12 @@ class CalificacionController extends Controller
     public function store(Request $request)
     {
         $calificacion = $request->calificacion;
+        $error_nota = false;
+        if ($request->nota > 100) {
+            $request->nota = 100;
+            $error_nota = true;
+        }
+
         $trimestre = $request->trimestre;
         $area = $request->area;
         $nro_actividad = $request->actividad;
@@ -81,7 +87,9 @@ class CalificacionController extends Controller
         $calificacion_estudiante->save();
 
         return response()->JSON([
-            'sw' => true
+            'sw' => true,
+            'error_nota' => $error_nota,
+            "nota" => $nota
         ]);
     }
 

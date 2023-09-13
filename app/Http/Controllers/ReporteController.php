@@ -323,6 +323,7 @@ class ReporteController extends Controller
             $contador_notas = 0;
             $suma_total = 0;
             $html = '';
+            $sw_bg = 1;
             foreach ($campos as $campo) {
                 $html .= '<div class="campo">';
                 $html .= '<div class="titulo">' . $campo->nombre . '</div>';
@@ -353,7 +354,7 @@ class ReporteController extends Controller
 
                     $heigth = '';
                     if (count($materias) <= 1) {
-                        $heigth = 'style="min-height:100%;"';
+                        $heigth = '';
                     }
 
                     foreach ($materias as $materia) {
@@ -363,7 +364,8 @@ class ReporteController extends Controller
                         } else {
                             $sw = 'a';
                         }
-                        $html .= '<div class="area" ' . $heigth . '>
+
+                        $html .= '<div class="area color' . $sw_bg . '">
                                     <div class="titulo">' . $materia->nombre . '</div>
                                     <div class="contenedor_notas">';
 
@@ -372,11 +374,11 @@ class ReporteController extends Controller
                             $calificacion = Calificacion::where('inscripcion_id', $inscripcion->id)
                                 ->where('materia_id', $materia->id)
                                 ->get()->first();
-                            $html .= '<div class="nota">' . $calificacion->nota_final . 'final</div>';
-                            $html .= '</div>'; //fin notas
+                            $html .= '<div class="nota">' . $calificacion->nota_final . '</div>';
+                            $html .= '</div>'; //fin contenedor_notas
                             $html .= '<div class="contenedor_notas">';
                             $html .= '<div class="nota">' . $calificacion->estado . '</div>';
-                            $html .= '</div>'; //fin notas';
+                            $html .= '</div>'; //fin contenedor_notas';
                         } else {
                             // OBTENER LAS NOTAS DE UN TRIMESTRE
                             $calificacion = CalificacionTrimestre::select('calificacion_trimestres.*')
@@ -387,21 +389,25 @@ class ReporteController extends Controller
                                 ->get()->first();
                             $html .= '<div class="nota">' . $calificacion->promedio_final . '</div>';
                             $suma_total += (int)$calificacion->promedio_final;
-                            $html .= '</div>'; //fin notas
+                            $html .= '</div>'; //fin contenedor_notas
                             $html .= '<div class="contenedor_notas">';
                             if ($calificacion->promedio_final < 51) {
                                 $html .= '<div class="nota">REPROBADO</div>';
                             } else {
                                 $html .= '<div class="nota">APROBADO</div>';
                             }
-                            $html .= '</div>'; //fin notas';
+                            $html .= '</div>'; //fin contenedor_notas';
                         }
-
 
                         $html .= '</div>'; //fin area
                         $contador_notas++;
                     }
-                    $html .= '</div>'; // fin contenedor areas
+                }
+                $html .= '</div>'; // fin contenedor areas
+                if ($sw_bg == 1) {
+                    $sw_bg = 2;
+                } else {
+                    $sw_bg = 1;
                 }
                 $html .= '</div>'; // fin campo
             }
@@ -413,7 +419,7 @@ class ReporteController extends Controller
                 $observacion_promedio = 'REPROBADO';
             }
             $html .= '<div class="campo">
-                            <div class="titulo"></div><div class="contenedor_areas"><div class="area" style="min-height:100%;">
+                            <div class="titulo"></div><div class="contenedor_areas"><div class="area" >
             <div class="titulo">PROMEDIO</div>
             <div class="contenedor_notas"><div class="nota">' . $suma_total . '</div></div><div class="contenedor_notas"><div class="nota">' . $observacion_promedio . '</div></div></div></div></div>';
 
@@ -569,7 +575,10 @@ class ReporteController extends Controller
                     $info_calificaciones[$calificacion->id][$area] += $actividad->promedio;
                 }
             }
-            $info_calificaciones[$calificacion->id][1] = (int)((int)$info_calificaciones[$calificacion->id][1] / 3);
+            // establecer promedios
+            foreach ($areas as $area) {
+                $info_calificaciones[$calificacion->id][$area] = (int)((int)$info_calificaciones[$calificacion->id][$area] / 3);
+            }
             $info_calificaciones[$calificacion->id]['p'] = (int)(((int)$info_calificaciones[$calificacion->id][1] + (int)$info_calificaciones[$calificacion->id][2] + (int)$info_calificaciones[$calificacion->id][3] + (int)$info_calificaciones[$calificacion->id][4]) / 4);
 
             $info_calificaciones[$calificacion->id]['o'] = 'APROBADO';

@@ -28,7 +28,6 @@
 
 .tabla_calificacions tbody tr.fila:hover {
     background: rgb(187, 216, 250);
-    border: solid 2px rgb(37, 104, 180);
 }
 
 .tabla_calificacions tbody tr td {

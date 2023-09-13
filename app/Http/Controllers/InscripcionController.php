@@ -41,60 +41,70 @@ class InscripcionController extends Controller
 
     public function store(Request $request)
     {
-        $request['fecha_registro'] = date('Y-m-d');
-        $request['estado'] = 'REPROBADO';
-        $request['status'] = 1;
-        $nueva_inscripcion = new Inscripcion(array_map('mb_strtoupper', $request->all()));
 
-        // REGISTRAR LAS MATERIAS ASIGNADAS AL GRADO Y NIVEL
-        // Materia
-        // MateriaGrado
-        $materia_grados = Materia::select('materias.*')
-            ->join('materia_grados', 'materia_grados.materia_id', '=', 'materias.id')
-            ->where('materias.nivel', $nueva_inscripcion->nivel)
-            ->where('grado', $nueva_inscripcion->grado)
-            ->get();
+        $existe_inscripcion = Inscripcion::where("estudiante_id", $request->estudiante_id)
+            ->where("gestion", $request->gestion)
+            ->where("status", 1)
+            ->get()->first();
 
-        if (count($materia_grados) == 0) {
-            return redirect()->route('inscripcions.index')->with('error', 'Error. No hay materias asignadas al NIVEL y GRADO que seleccionó. Comuniquese con un Administrador/Secretaria');
-        }
+        if (!$existe_inscripcion) {
+            $request['fecha_registro'] = date('Y-m-d');
+            $request['estado'] = 'REPROBADO';
+            $request['status'] = 1;
+            $nueva_inscripcion = new inscripcion(array_map('mb_strtoupper', $request->all()));
 
-        $nueva_inscripcion->save();
-        foreach ($materia_grados as $materia) {
-            //Registrar Materia En la inscripcion
-            $nueva_calificacion = Calificacion::create([
-                'inscripcion_id' => $nueva_inscripcion->id,
-                'materia_id' => $materia->id,
-                'notal_final' => 0,
-                'estado' => 'REPROBADO',
-                'fecha_registro' => date('Y-m-d')
-            ]);
+            // REGISTRAR LAS MATERIAS ASIGNADAS AL GRADO Y NIVEL
+            // Materia
+            // MateriaGrado
+            $materia_grados = Materia::select('materias.*')
+                ->join('materia_grados', 'materia_grados.materia_id', '=', 'materias.id')
+                ->where('materias.nivel', $nueva_inscripcion->nivel)
+                ->where('grado', $nueva_inscripcion->grado)
+                ->get();
 
-            for ($i = 1; $i <= 3; $i++) {
-                //Registrar los Trimestres Por Materia
-                $calificacion_trimestre = CalificacionTrimestre::create([
-                    'calificacion_id' => $nueva_calificacion->id,
-                    'trimestre' => $i
+            if (count($materia_grados) == 0) {
+                return redirect()->route('inscripcions.index')->with('error', 'Error. No hay materias asignadas al NIVEL y GRADO que seleccionó. Comuniquese con un Administrador/Secretaria');
+            }
+
+            $nueva_inscripcion->save();
+            foreach ($materia_grados as $materia) {
+                //Registrar Materia En la inscripcion
+                $nueva_calificacion = Calificacion::create([
+                    'inscripcion_id' => $nueva_inscripcion->id,
+                    'materia_id' => $materia->id,
+                    'notal_final' => 0,
+                    'estado' => 'REPROBADO',
+                    'fecha_registro' => date('Y-m-d')
                 ]);
 
-                // Registrar las Areas(4) y sus 6 actividades
-                for ($j = 1; $j <= 4; $j++) {
-                    TrimestreActividad::create([
-                        'ct_id' => $calificacion_trimestre->id,
-                        'area' => $j,
-                        'a1' => 0,
-                        'a2' => 0,
-                        'a3' => 0,
-                        'a4' => 0,
-                        'a5' => 0,
-                        'a6' => 0,
-                        'promedio' => 0
+                for ($i = 1; $i <= 3; $i++) {
+                    //Registrar los Trimestres Por Materia
+                    $calificacion_trimestre = CalificacionTrimestre::create([
+                        'calificacion_id' => $nueva_calificacion->id,
+                        'trimestre' => $i
                     ]);
+
+                    // Registrar las Areas(4) y sus 6 actividades
+                    for ($j = 1; $j <= 4; $j++) {
+                        TrimestreActividad::create([
+                            'ct_id' => $calificacion_trimestre->id,
+                            'area' => $j,
+                            'a1' => 0,
+                            'a2' => 0,
+                            'a3' => 0,
+                            'a4' => 0,
+                            'a5' => 0,
+                            'a6' => 0,
+                            'promedio' => 0
+                        ]);
+                    }
                 }
             }
-        }
 
-        return redirect()->route('inscripcions.index')->with('bien', 'Registro realizado con éxito');
+            return redirect()->route('inscripcions.index')->with('bien', 'Registro realizado con éxito');
+        }
+        $estudiante = Estudiante::find($request->estudiante_id);
+        return redirect()->route('inscripcions.index')->with('error', 'El/La estudiante ' . $estudiante->full_name . " ya tiene una inscripción en la gestión " . $request->gestion);
     }
 
     public function edit(inscripcion $inscripcion)
