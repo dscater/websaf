@@ -85,7 +85,7 @@ class InscripcionController extends Controller
                     ]);
 
                     // Registrar las Areas(4) y sus 6 actividades
-                    for ($j = 1; $j <= 4; $j++) {
+                    for ($j = 1; $j <= 5; $j++) {
                         TrimestreActividad::create([
                             'ct_id' => $calificacion_trimestre->id,
                             'area' => $j,

@@ -36,28 +36,37 @@ $(document).ready(function () {
 
             let suma_calificacion = 0;
             let calificacion = 0;
-            for (let i = 1; i <= 6; i++) {
-                calificacion = fila
-                    .find(".a" + data_area + i)
-                    .children("input")
-                    .val();
-                if (calificacion != "") {
+            if (data_area == 5) {
+                for (let i = 1; i <= 2; i++) {
+                    calificacion = fila
+                        .find(".a" + data_area + i)
+                        .children("input")
+                        .val();
                     suma_calificacion += parseFloat(calificacion);
                 }
+                suma_calificacion = suma_calificacion / 2;
+            } else {
+                for (let i = 1; i <= 6; i++) {
+                    calificacion = fila
+                        .find(".a" + data_area + i)
+                        .children("input")
+                        .val();
+                    suma_calificacion += parseFloat(calificacion);
+                }
+                suma_calificacion = suma_calificacion / 6;
             }
 
-            suma_calificacion = suma_calificacion / 6;
             suma_calificacion = suma_calificacion.toFixed(0);
             promedio.text(suma_calificacion);
 
             let promedio_final = 0;
             let suma_promedios = 0;
             let valor_promedio = 0;
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 5; i++) {
                 valor_promedio = fila.find("td.p" + i).text();
                 suma_promedios += parseFloat(valor_promedio);
             }
-            promedio_final = suma_promedios / 4;
+            promedio_final = suma_promedios;
             promedio_final = promedio_final.toFixed(0);
             pf.text(promedio_final);
 
@@ -82,7 +91,7 @@ $(document).ready(function () {
                         swal.fire({
                             title: "Error",
                             icon: "error",
-                            text: `La nota no puede superar los 100 puntos.`,
+                            text: `La nota no puede superar los ${response.maximo} puntos.`,
                             confirmButtonText: "Aceptar",
                             confirmButtonColor: "#007bff",
                         });
@@ -111,26 +120,38 @@ function calculaPromedio(td) {
 
     let suma_calificacion = 0;
     let calificacion = 0;
-    for (let i = 1; i <= 6; i++) {
-        calificacion = fila
-            .find(".a" + data_area + i)
-            .children("input")
-            .val();
-        suma_calificacion += parseFloat(calificacion);
+
+    if (data_area == 5) {
+        for (let i = 1; i <= 2; i++) {
+            calificacion = fila
+                .find(".a" + data_area + i)
+                .children("input")
+                .val();
+            suma_calificacion += parseFloat(calificacion);
+        }
+        suma_calificacion = suma_calificacion / 2;
+    } else {
+        for (let i = 1; i <= 6; i++) {
+            calificacion = fila
+                .find(".a" + data_area + i)
+                .children("input")
+                .val();
+            suma_calificacion += parseFloat(calificacion);
+        }
+        suma_calificacion = suma_calificacion / 6;
     }
 
-    suma_calificacion = suma_calificacion / 6;
     suma_calificacion = suma_calificacion.toFixed(0);
     promedio.text(suma_calificacion);
 
     let promedio_final = 0;
     let suma_promedios = 0;
     let valor_promedio = 0;
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
         valor_promedio = fila.find("td.p" + i).text();
         suma_promedios += parseFloat(valor_promedio);
     }
-    promedio_final = suma_promedios / 4;
+    promedio_final = suma_promedios;
     promedio_final = promedio_final.toFixed(0);
     pf.text(promedio_final);
 

@@ -27,6 +27,7 @@
         table thead tr th,
         tbody tr td {
             font-size: 0.63em;
+            word-wrap: break-word;
         }
 
         .encabezado {
@@ -142,6 +143,7 @@
                 <th width="10%">Saber B.1</th>
                 <th width="10%">Hacer B.1</th>
                 <th width="10%">Decidir B.1</th>
+                <th width="10%">Autoevaluación B.1</th>
                 <th width="10%">PROMEDIO</th>
                 <th width="13%">OBSERVACIÓN</th>
             </tr>
@@ -158,6 +160,7 @@
                     <td class="centreado">{{ $info_calificaciones[$calificacion->id][2] }}</td>
                     <td class="centreado">{{ $info_calificaciones[$calificacion->id][3] }}</td>
                     <td class="centreado">{{ $info_calificaciones[$calificacion->id][4] }}</td>
+                    <td class="centreado">{{ $info_calificaciones[$calificacion->id][5] }}</td>
                     <td class="centreado">{{ $info_calificaciones[$calificacion->id]['p'] }}</td>
                     <td class="centreado">{{ $info_calificaciones[$calificacion->id]['o'] }}</td>
                 </tr>

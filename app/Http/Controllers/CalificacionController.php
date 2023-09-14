@@ -40,12 +40,14 @@ class CalificacionController extends Controller
     {
         $calificacion = $request->calificacion;
         $error_nota = false;
-        if ($request->nota > 100) {
-            $request->nota = 100;
-            $error_nota = true;
-        }
-        if (!$request->nota) {
+        if (!$request->nota || (int) $request->nota < 0) {
             $request->nota = 0;
+        }
+        $maximo = 10;
+        if (!self::validaNotaArea($request->area, $request->nota)) {
+            $request->nota = self::getMaximoNotaArea($request->area);
+            $maximo = $request->nota;
+            $error_nota = true;
         }
 
         $trimestre = $request->trimestre;
@@ -92,8 +94,33 @@ class CalificacionController extends Controller
         return response()->JSON([
             'sw' => true,
             'error_nota' => $error_nota,
-            "nota" => $nota
+            "nota" => $nota,
+            "maximo" => $maximo
         ]);
+    }
+
+    public static  function validaNotaArea($area, $nota)
+    {
+        if ($area == 1 || $area == 4 || $area == 5) {
+            if ($nota > 10) {
+                return false;
+            }
+        }
+
+        if ($area == 2 || $area == 3) {
+            if ($nota > 35) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static  function getMaximoNotaArea($area)
+    {
+        if ($area == 1 || $area == 4 || $area == 5) {
+            return 10;
+        }
+        return 35;
     }
 
     public function getEstudiantesCalificacions(Request $request)
@@ -123,7 +150,7 @@ class CalificacionController extends Controller
                 $html .= '<tr class="fila" data-calificacion="' . $calificacion->id . '">
                             <td>' . $calificacion->inscripcion->estudiante->paterno . ' ' . $calificacion->inscripcion->estudiante->materno . ' ' . $calificacion->inscripcion->estudiante->nombre . '</td>';
 
-                for ($i = 1; $i <= 4; $i++) {
+                for ($i = 1; $i <= 5; $i++) {
                     $c_trimestre = CalificacionTrimestre::where('calificacion_id', $calificacion->id)
                         ->where('trimestre', $trimestre)
                         ->get()
@@ -133,26 +160,50 @@ class CalificacionController extends Controller
                         ->where('area', $i)
                         ->get()
                         ->first();
+                    if (!$actividad) {
+                        $actividad = TrimestreActividad::create([
+                            'ct_id' => $c_trimestre->id,
+                            'area' => $i,
+                            'a1' => 0,
+                            'a2' => 0,
+                            'a3' => 0,
+                            'a4' => 0,
+                            'a5' => 0,
+                            'a6' => 0,
+                            'promedio' => 0
+                        ]);
+                    }
 
-                    $html .= '<td class="a' . $i . '1 calificacion" data-actividad="1" data-area="' . $i . '">
+                    if ($i == 5) {
+                        // AUTOEVALUACIÓN 2 COLUMNAS
+                        $html .= '<td class="a' . $i . '1 calificacion" data-actividad="1" data-area="' . $i . '">
                                     <input type="number" min="0" value="' . $actividad->a1 . '">
                                 </td>
                                 <td class="a' . $i . '2 calificacion" data-actividad="2" data-area="' . $i . '">
                                     <input type="number" min="0" value="' . $actividad->a2 . '">
                                 </td>
-                                <td class="a' . $i . '3 calificacion" data-actividad="3" data-area="' . $i . '">
-                                    <input type="number" min="0" value="' . $actividad->a3 . '">
-                                </td>
-                                <td class="a' . $i . '4 calificacion" data-actividad="4" data-area="' . $i . '">
-                                    <input type="number" min="0" value="' . $actividad->a4 . '">
-                                </td>
-                                <td class="a' . $i . '5 calificacion" data-actividad="5" data-area="' . $i . '">
-                                    <input type="number" min="0" value="' . $actividad->a5 . '">
-                                </td>
-                                <td class="a' . $i . '6 calificacion" data-actividad="6" data-area="' . $i . '">
-                                    <input type="number" min="0" value="' . $actividad->a6 . '">
-                                </td>
                                 <td class="bg-lightblue p' . $i . ' promedio" data-area="' . $i . '">' . $actividad->promedio . '</td>';
+                    } else {
+                        $html .= '<td class="a' . $i . '1 calificacion" data-actividad="1" data-area="' . $i . '">
+                                        <input type="number" min="0" value="' . $actividad->a1 . '">
+                                    </td>
+                                    <td class="a' . $i . '2 calificacion" data-actividad="2" data-area="' . $i . '">
+                                        <input type="number" min="0" value="' . $actividad->a2 . '">
+                                    </td>
+                                    <td class="a' . $i . '3 calificacion" data-actividad="3" data-area="' . $i . '">
+                                        <input type="number" min="0" value="' . $actividad->a3 . '">
+                                    </td>
+                                    <td class="a' . $i . '4 calificacion" data-actividad="4" data-area="' . $i . '">
+                                        <input type="number" min="0" value="' . $actividad->a4 . '">
+                                    </td>
+                                    <td class="a' . $i . '5 calificacion" data-actividad="5" data-area="' . $i . '">
+                                        <input type="number" min="0" value="' . $actividad->a5 . '">
+                                    </td>
+                                    <td class="a' . $i . '6 calificacion" data-actividad="6" data-area="' . $i . '">
+                                        <input type="number" min="0" value="' . $actividad->a6 . '">
+                                    </td>
+                                    <td class="bg-lightblue p' . $i . ' promedio" data-area="' . $i . '">' . $actividad->promedio . '</td>';
+                    }
                     $suma_promedio += (float)$actividad->promedio;
                 }
                 $html .= ' <td class="bg-orange pf promedio_final">' . $c_trimestre->promedio_final . '</td>';

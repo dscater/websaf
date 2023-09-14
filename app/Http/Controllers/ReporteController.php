@@ -549,7 +549,7 @@ class ReporteController extends Controller
         }
 
         $trimestres = [1, 2, 3];
-        $areas = [1, 2, 3, 4];
+        $areas = [1, 2, 3, 4, 5];
 
         $info_calificaciones = [];
 
@@ -560,6 +560,7 @@ class ReporteController extends Controller
                 2 => 0,
                 3 => 0,
                 4 => 0,
+                5 => 0,
                 'p' => 0,
                 'o' => 'REPROBADO'
             ];
@@ -572,6 +573,20 @@ class ReporteController extends Controller
                 foreach ($areas as $area) {
                     $actividad = TrimestreActividad::where('ct_id', $calificacion_trimestre->id)
                         ->where('area', $area)->get()->first();
+
+                    if (!$actividad) {
+                        $actividad = TrimestreActividad::create([
+                            'ct_id' => $calificacion_trimestre->id,
+                            'area' => $area,
+                            'a1' => 0,
+                            'a2' => 0,
+                            'a3' => 0,
+                            'a4' => 0,
+                            'a5' => 0,
+                            'a6' => 0,
+                            'promedio' => 0
+                        ]);
+                    }
                     $info_calificaciones[$calificacion->id][$area] += $actividad->promedio;
                 }
             }
@@ -579,7 +594,24 @@ class ReporteController extends Controller
             foreach ($areas as $area) {
                 $info_calificaciones[$calificacion->id][$area] = (int)((int)$info_calificaciones[$calificacion->id][$area] / 3);
             }
-            $info_calificaciones[$calificacion->id]['p'] = (int)(((int)$info_calificaciones[$calificacion->id][1] + (int)$info_calificaciones[$calificacion->id][2] + (int)$info_calificaciones[$calificacion->id][3] + (int)$info_calificaciones[$calificacion->id][4]) / 4);
+            $suma_inicial = (int)(((int)$info_calificaciones[$calificacion->id][1] + (int)$info_calificaciones[$calificacion->id][2] + (int)$info_calificaciones[$calificacion->id][3] + (int)$info_calificaciones[$calificacion->id][4]) + (int)$info_calificaciones[$calificacion->id][5]);
+
+            if ($suma_inicial < (int)$calificacion->nota_final) {
+                $diff = (int)$calificacion->nota_final - $suma_inicial;
+                if ((int)$info_calificaciones[$calificacion->id][5] + $diff <= 10) {
+                    (int)$info_calificaciones[$calificacion->id][5] = (int)$info_calificaciones[$calificacion->id][5] + $diff;
+                } elseif ((int)$info_calificaciones[$calificacion->id][4] + $diff <= 10) {
+                    (int)$info_calificaciones[$calificacion->id][4] = (int)$info_calificaciones[$calificacion->id][4] + $diff;
+                } elseif ((int)$info_calificaciones[$calificacion->id][3] + $diff <= 35) {
+                    (int)$info_calificaciones[$calificacion->id][3] = (int)$info_calificaciones[$calificacion->id][3] + $diff;
+                } elseif ((int)$info_calificaciones[$calificacion->id][2] + $diff <= 35) {
+                    (int)$info_calificaciones[$calificacion->id][2] = (int)$info_calificaciones[$calificacion->id][2] + $diff;
+                } elseif ((int)$info_calificaciones[$calificacion->id][1] + $diff <= 10) {
+                    (int)$info_calificaciones[$calificacion->id][1] = (int)$info_calificaciones[$calificacion->id][1] + $diff;
+                }
+            }
+
+            $info_calificaciones[$calificacion->id]['p'] = (int)$calificacion->nota_final;
 
             $info_calificaciones[$calificacion->id]['o'] = 'APROBADO';
             if ((int)$info_calificaciones[$calificacion->id]['p'] < 51) {

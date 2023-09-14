@@ -72,10 +72,11 @@
                                         <thead>
                                             <tr class="bg-blue">
                                                 <th>DATOS DEL ESTUDIANTE</th>
-                                                <th colspan="7">ÁREA 1</th>
-                                                <th colspan="7">ÁREA 2</th>
-                                                <th colspan="7">ÁREA 3</th>
-                                                <th colspan="7">ÁREA 4</th>
+                                                <th colspan="7">SER - 10</th>
+                                                <th colspan="7">SABER - 35</th>
+                                                <th colspan="7">HACER - 35</th>
+                                                <th colspan="7">DECIR - 10</th>
+                                                <th colspan="3">AUTOEVALUACIÓN - 10</th>
                                                 <th rowspan="2" class="bg-orange vertical">
                                                     <div>PROMEDIO FINAL</div>
                                                 </th>
@@ -117,6 +118,11 @@
                                                 <th>A4</th>
                                                 <th>A5</th>
                                                 <th>A6</th>
+                                                <th class="bg-lightblue vertical">
+                                                    <div>PROMEDIO</div>
+                                                </th>
+                                                <th>A1</th>
+                                                <th>A2</th>
                                                 <th class="bg-lightblue vertical">
                                                     <div>PROMEDIO</div>
                                                 </th>
