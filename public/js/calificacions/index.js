@@ -31,7 +31,7 @@ $(document).ready(function () {
             let data_actividad = td.attr("data-actividad");
             let nota = td.children("input").val();
             let promedio = fila.find("td.p" + data_area);
-            console.log(fila.html());
+            // console.log(fila.html());
             let pf = fila.find("td.pf");
 
             let suma_calificacion = 0;
@@ -41,7 +41,9 @@ $(document).ready(function () {
                     .find(".a" + data_area + i)
                     .children("input")
                     .val();
-                suma_calificacion += parseFloat(calificacion);
+                if (calificacion != "") {
+                    suma_calificacion += parseFloat(calificacion);
+                }
             }
 
             suma_calificacion = suma_calificacion / 6;
@@ -85,6 +87,7 @@ $(document).ready(function () {
                             confirmButtonColor: "#007bff",
                         });
                         td.children("input").val(response.nota);
+                        calculaPromedio(td);
                     }
 
                     fila.addClass("correcto");
@@ -96,6 +99,65 @@ $(document).ready(function () {
         }
     );
 });
+
+function calculaPromedio(td) {
+    let fila = td.closest(".fila");
+    let calificacion_id = fila.attr("data-calificacion");
+    let data_area = td.attr("data-area");
+    let data_actividad = td.attr("data-actividad");
+    let nota = td.children("input").val();
+    let promedio = fila.find("td.p" + data_area);
+    let pf = fila.find("td.pf");
+
+    let suma_calificacion = 0;
+    let calificacion = 0;
+    for (let i = 1; i <= 6; i++) {
+        calificacion = fila
+            .find(".a" + data_area + i)
+            .children("input")
+            .val();
+        suma_calificacion += parseFloat(calificacion);
+    }
+
+    suma_calificacion = suma_calificacion / 6;
+    suma_calificacion = suma_calificacion.toFixed(0);
+    promedio.text(suma_calificacion);
+
+    let promedio_final = 0;
+    let suma_promedios = 0;
+    let valor_promedio = 0;
+    for (let i = 1; i <= 4; i++) {
+        valor_promedio = fila.find("td.p" + i).text();
+        suma_promedios += parseFloat(valor_promedio);
+    }
+    promedio_final = suma_promedios / 4;
+    promedio_final = promedio_final.toFixed(0);
+    pf.text(promedio_final);
+
+    $.ajax({
+        headers: {
+            "x-csrf-token": $("#token").val(),
+        },
+        type: "POST",
+        url: $("#urlStoreCalificacion").val(),
+        data: {
+            calificacion: calificacion_id,
+            actividad: data_actividad,
+            nota: nota,
+            promedio: suma_calificacion,
+            area: data_area,
+            promedio_final: promedio_final,
+            trimestre: select_trimestre.val(),
+        },
+        dataType: "json",
+        success: function (response) {
+            fila.addClass("correcto");
+            setTimeout(function () {
+                fila.removeClass("correcto");
+            }, 700);
+        },
+    });
+}
 
 function obtieneMaterias() {
     if (select_gestion.val() != "") {

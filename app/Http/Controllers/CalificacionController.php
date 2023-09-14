@@ -44,6 +44,9 @@ class CalificacionController extends Controller
             $request->nota = 100;
             $error_nota = true;
         }
+        if (!$request->nota) {
+            $request->nota = 0;
+        }
 
         $trimestre = $request->trimestre;
         $area = $request->area;
