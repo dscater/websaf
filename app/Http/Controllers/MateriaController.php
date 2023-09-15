@@ -13,7 +13,7 @@ class MateriaController extends Controller
 {
     public function index()
     {
-        $materias = materia::all();
+        $materias = Materia::all();
         return view('materias.index', compact('materias'));
     }
 
@@ -33,7 +33,7 @@ class MateriaController extends Controller
     public function store(Request $request)
     {
         $request['fecha_registro'] = date('Y-m-d');
-        $materia = materia::create(array_map('mb_strtoupper', $request->except('grado', 'horas')));
+        $materia = Materia::create(array_map('mb_strtoupper', $request->except('grado', 'horas')));
 
         // registrar grados
         $grado = $request->grado;
@@ -49,7 +49,7 @@ class MateriaController extends Controller
         return redirect()->route('materias.index')->with('bien', 'Registro realizado con éxito');
     }
 
-    public function edit(materia $materia)
+    public function edit(Materia $materia)
     {
         $areas = area::all();
 
@@ -79,7 +79,7 @@ class MateriaController extends Controller
         return view('materias.edit', compact('materia', 'array_areas', 'html'));
     }
 
-    public function update(materia $materia, Request $request)
+    public function update(Materia $materia, Request $request)
     {
         $materia->update(array_map('mb_strtoupper', $request->except('grado', 'horas')));
         // actualizar grados
@@ -99,7 +99,7 @@ class MateriaController extends Controller
 
     public function show()
     {
-        $campos = campo::all();
+        $campos = Campo::all();
 
         $niveles = [
             'NIVEL INICIAL',
@@ -300,7 +300,7 @@ class MateriaController extends Controller
         return view('materias.show', compact('html'));
     }
 
-    public function destroy(materia $materia)
+    public function destroy(Materia $materia)
     {
         $materia->delete();
         return redirect()->route('materias.index')->with('bien', 'Registro eliminado correctamente');

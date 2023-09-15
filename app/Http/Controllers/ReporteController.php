@@ -20,8 +20,9 @@ use App\TrimestreActividad;
 use App\ProfesorMateria;
 use App\PagoEstudiante;
 use App\Asistencia;
+use App\InscripcionMateria;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
 
 class ReporteController extends Controller
 {
@@ -374,6 +375,42 @@ class ReporteController extends Controller
                             $calificacion = Calificacion::where('inscripcion_id', $inscripcion->id)
                                 ->where('materia_id', $materia->id)
                                 ->get()->first();
+
+                            if (!$calificacion) {
+                                // registrar la materia en la inscripción
+                                $calificacion = Calificacion::create([
+                                    'inscripcion_id' => $inscripcion->id,
+                                    'materia_id' => $materia->id,
+                                    'nota_final' => 0,
+                                    'estado' => "REPROBADO",
+                                    "fecha_registro" => date("Y-m-d")
+                                ]);
+
+                                //Registrar los Trimestres Por Materia
+                                for ($i = 1; $i <= 3; $i++) {
+                                    $calificacion_trimestre = CalificacionTrimestre::create([
+                                        'calificacion_id' => $calificacion->id,
+                                        'trimestre' => $i,
+                                        "promedio_final" => 0,
+                                    ]);
+
+                                    // Registrar las Areas(5) y sus 6 actividades
+                                    for ($j = 1; $j <= 5; $j++) {
+                                        TrimestreActividad::create([
+                                            'ct_id' => $calificacion_trimestre->id,
+                                            'area' => $j,
+                                            'a1' => 0,
+                                            'a2' => 0,
+                                            'a3' => 0,
+                                            'a4' => 0,
+                                            'a5' => 0,
+                                            'a6' => 0,
+                                            'promedio' => 0
+                                        ]);
+                                    }
+                                }
+                            }
+
                             $html .= '<div class="nota">' . $calificacion->nota_final . '</div>';
                             $html .= '</div>'; //fin contenedor_notas
                             $html .= '<div class="contenedor_notas">';
@@ -387,6 +424,44 @@ class ReporteController extends Controller
                                 ->where('calificacions.materia_id', $materia->id)
                                 ->where('calificacion_trimestres.trimestre', $trimestre)
                                 ->get()->first();
+
+                            // Log::debug("inscripcion: " . $inscripcion->id);
+                            // Log::debug("materia: " . $materia->nombre);
+                            // Log::debug("materia: " . $materia->id);
+                            // Log::debug("trimestre: " . $trimestre);
+                            // Log::debug((string)$calificacion);
+                            if (!$calificacion) {
+                                // registrar la materia en la inscripción
+                                $nueva_calificacion = Calificacion::create([
+                                    'inscripcion_id' => $inscripcion->id,
+                                    'materia_id' => $materia->id,
+                                    'nota_final' => 0,
+                                    'estado' => "REPROBADO",
+                                    "fecha_registro" => date("Y-m-d")
+                                ]);
+
+                                //Registrar los Trimestres Por Materia
+                                $calificacion = CalificacionTrimestre::create([
+                                    'calificacion_id' => $nueva_calificacion->id,
+                                    'trimestre' => $trimestre,
+                                    "promedio_final" => 0,
+                                ]);
+
+                                // Registrar las Areas(5) y sus 6 actividades
+                                for ($j = 1; $j <= 5; $j++) {
+                                    TrimestreActividad::create([
+                                        'ct_id' => $calificacion->id,
+                                        'area' => $j,
+                                        'a1' => 0,
+                                        'a2' => 0,
+                                        'a3' => 0,
+                                        'a4' => 0,
+                                        'a5' => 0,
+                                        'a6' => 0,
+                                        'promedio' => 0
+                                    ]);
+                                }
+                            }
                             $html .= '<div class="nota">' . $calificacion->promedio_final . '</div>';
                             $suma_total += (int)$calificacion->promedio_final;
                             $html .= '</div>'; //fin contenedor_notas
@@ -396,6 +471,7 @@ class ReporteController extends Controller
                             } else {
                                 $html .= '<div class="nota">APROBADO</div>';
                             }
+
                             $html .= '</div>'; //fin contenedor_notas';
                         }
 
@@ -493,6 +569,41 @@ class ReporteController extends Controller
                         ->where('materia_id', $materia->materia_id)
                         ->get()
                         ->first();
+
+                    if (!$calificacion) {
+                        // registrar la materia en la inscripción
+                        $calificacion = Calificacion::create([
+                            'inscripcion_id' => $inscripcion->id,
+                            'materia_id' => $materia->materia_id,
+                            'nota_final' => 0,
+                            'estado' => "REPROBADO",
+                            "fecha_registro" => date("Y-m-d")
+                        ]);
+
+                        //Registrar los Trimestres Por Materia
+                        for ($i = 1; $i <= 3; $i++) {
+                            $calificacion_trimestre = CalificacionTrimestre::create([
+                                'calificacion_id' => $calificacion->id,
+                                'trimestre' => $i,
+                                "promedio_final" => 0,
+                            ]);
+
+                            // Registrar las Areas(5) y sus 6 actividades
+                            for ($j = 1; $j <= 5; $j++) {
+                                TrimestreActividad::create([
+                                    'ct_id' => $calificacion_trimestre->id,
+                                    'area' => $j,
+                                    'a1' => 0,
+                                    'a2' => 0,
+                                    'a3' => 0,
+                                    'a4' => 0,
+                                    'a5' => 0,
+                                    'a6' => 0,
+                                    'promedio' => 0
+                                ]);
+                            }
+                        }
+                    }
                     $suma_notas += (int)$calificacion->nota_final;
                     $calificacions[$fg][$inscripcion->id][$materia->materia_id] = [
                         'nota' => $calificacion->nota_final,
@@ -564,11 +675,35 @@ class ReporteController extends Controller
                 'p' => 0,
                 'o' => 'REPROBADO'
             ];
+            // Log::debug((string)$calificacion);
             foreach ($trimestres as $trimestre) {
                 $calificacion_trimestre = CalificacionTrimestre::where('calificacion_id', $calificacion->id)
                     ->where('trimestre', $trimestre)
                     ->get()
                     ->first();
+
+                if (!$calificacion_trimestre) {
+                    //Registrar los Trimestres Por Materia
+                    $calificacion_trimestre = CalificacionTrimestre::create([
+                        'calificacion_id' => $calificacion->id,
+                        'trimestre' => $trimestre
+                    ]);
+
+                    // Registrar las Areas(5) y sus 6 actividades
+                    for ($j = 1; $j <= 5; $j++) {
+                        TrimestreActividad::create([
+                            'ct_id' => $calificacion_trimestre->id,
+                            'area' => $j,
+                            'a1' => 0,
+                            'a2' => 0,
+                            'a3' => 0,
+                            'a4' => 0,
+                            'a5' => 0,
+                            'a6' => 0,
+                            'promedio' => 0
+                        ]);
+                    }
+                }
                 $suma_promedio_area = 0;
                 foreach ($areas as $area) {
                     $actividad = TrimestreActividad::where('ct_id', $calificacion_trimestre->id)
@@ -705,8 +840,7 @@ class ReporteController extends Controller
             switch ($filtro) {
                 case 'concepto':
                     if ($concepto != 'todos') {
-                        $pagos = PagoEstudiante::whereBetween('fecha_registro', [$fecha_ini, $fecha_fin])
-                            ->where('concepto', $concepto)
+                        $pagos = PagoEstudiante::where('concepto', $concepto)
                             ->where('estado', 1)
                             ->orderBy('fecha_registro', 'desc')
                             ->get();

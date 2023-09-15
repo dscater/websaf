@@ -84,7 +84,7 @@ class InscripcionController extends Controller
                         'trimestre' => $i
                     ]);
 
-                    // Registrar las Areas(4) y sus 6 actividades
+                    // Registrar las Areas(5) y sus 6 actividades
                     for ($j = 1; $j <= 5; $j++) {
                         TrimestreActividad::create([
                             'ct_id' => $calificacion_trimestre->id,

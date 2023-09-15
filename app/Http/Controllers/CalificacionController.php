@@ -11,6 +11,8 @@ use App\Calificacion;
 use App\CalificacionTrimestre;
 use App\ProfesorMateria;
 use App\Estudiante;
+use App\InscripcionMateria;
+use App\Materia;
 
 class CalificacionController extends Controller
 {
@@ -130,6 +132,7 @@ class CalificacionController extends Controller
         $trimestre = $request->trimestre;
 
         $profesor_materia = ProfesorMateria::find($materia);
+        self::asignaNuevaMateria($gestion, $profesor_materia->materia_id, $profesor_materia->grado, $profesor_materia->nivel);
         $calificacions = Calificacion::select('calificacions.*')
             ->join('inscripcions', 'inscripcions.id', '=', 'calificacions.inscripcion_id')
             ->where('calificacions.materia_id', $profesor_materia->materia_id)
@@ -144,6 +147,7 @@ class CalificacionController extends Controller
         $suma_promedio = 0;
 
         $html = '';
+
         if (count($calificacions) > 0) {
             foreach ($calificacions as $calificacion) {
 
@@ -219,6 +223,56 @@ class CalificacionController extends Controller
             'sw' => true,
             'html' => $html
         ]);
+    }
+
+    public static function asignaNuevaMateria($gestion, $materia_id, $grado, $nivel)
+    {
+        $materia = Materia::find($materia_id);
+
+        $inscripcion_materias = Calificacion::where("materia_id", $materia->id)->get();
+
+        if (count($inscripcion_materias) == 0) {
+            // buscamos todas las inscripciones en esta $gestion, $grado y $nivel
+            $inscripcions = Inscripcion::where("gestion", $gestion)
+                ->where("grado", $grado)
+                ->where("nivel", $nivel)
+                ->where("status", 1)
+                ->get();
+            foreach ($inscripcions as $inscripcion) {
+                //Registrar Materia En la inscripcion
+                $nueva_calificacion = Calificacion::create([
+                    'inscripcion_id' => $inscripcion->id,
+                    'materia_id' => $materia->id,
+                    'notal_final' => 0,
+                    'estado' => 'REPROBADO',
+                    'fecha_registro' => date('Y-m-d')
+                ]);
+
+                for ($i = 1; $i <= 3; $i++) {
+                    //Registrar los Trimestres Por Materia
+                    $calificacion_trimestre = CalificacionTrimestre::create([
+                        'calificacion_id' => $nueva_calificacion->id,
+                        'trimestre' => $i
+                    ]);
+
+                    // Registrar las Areas(5) y sus 6 actividades
+                    for ($j = 1; $j <= 5; $j++) {
+                        TrimestreActividad::create([
+                            'ct_id' => $calificacion_trimestre->id,
+                            'area' => $j,
+                            'a1' => 0,
+                            'a2' => 0,
+                            'a3' => 0,
+                            'a4' => 0,
+                            'a5' => 0,
+                            'a6' => 0,
+                            'promedio' => 0
+                        ]);
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public function calificacion_estudiante(Estudiante $estudiante)
