@@ -40,18 +40,7 @@
     </div>
     <!-- /.col -->
 
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div id="contenedorFecha" style="flex-direction: column;">
-                    <span id="txtFecha"></span>
-                    <span id="txtHora"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
+    {{-- <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <h4 class="title-header">KPI Ingresos Económicos</h4>
@@ -97,7 +86,7 @@
                 <div id="contenedor_grafico"></div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="col-md-12">
         <div class="card">
@@ -162,5 +151,4 @@
     </div>
  </div>
 
- <input type="hidden" id="urlInfoIngresosEconomicos" value="{{route('pago_estudiantes.ingresos_economicos')}}">
  <input type="hidden" id="urlInfoCantidadEstudiantes" value="{{route('inscripcions.cantidad_estudiantes')}}">

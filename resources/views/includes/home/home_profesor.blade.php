@@ -25,7 +25,7 @@
         <!-- /.info-box -->
     </div>
     <!-- /.col -->
-    <div class="col-12 col-sm-6 col-md-3">
+    {{-- <div class="col-12 col-sm-6 col-md-3">
         <div class="card">
             <div class="card-body text-center">
                 <div id="contenedorFecha" style="flex-direction: column;">
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">

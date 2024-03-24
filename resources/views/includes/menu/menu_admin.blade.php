@@ -18,13 +18,13 @@
         <p>Profesores</p>
     </a>
 </li>
-
+{{-- 
 <li class="nav-item">
     <a href="{{ route('asistencias.index') }}" class="nav-link {{ request()->is('asistencias*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-list-alt"></i>
         <p>Asistencias</p>
     </a>
-</li>
+</li> --}}
 
 <li class="nav-item @if(request()->is('materias*') || request()->is('areas*') || request()->is('campos*') || request()->is('nivels*') || request()->is('grados*'))menu-is-opening menu-open active @endif">
     <a href="#" class="nav-link">
@@ -73,28 +73,6 @@
         </li>
     </ul>
 </li>
-
-<li class="nav-item @if(request()->is('pago_estudiantes*') || request()->is('plan_pagos*'))menu-is-opening menu-open active @endif">
-    <a href="#" class="nav-link">
-        <i class="nav-icon far fa-list-alt"></i>
-        <p>Pagos <i class="fas fa-angle-left right"></i></p>
-    </a>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('pago_estudiantes.index') }}" class="nav-link @if(request()->is('pago_estudiantes*'))active @endif">
-                <i class="nav-icon far fa-circle"></i>
-                <p>Pagos Estudiantes</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('plan_pagos.index') }}" class="nav-link @if(request()->is('plan_pagos*'))active @endif">
-                <i class="nav-icon far fa-circle"></i>
-                <p>Plan de Pagos</p>
-            </a>
-        </li>
-    </ul>
-</li>
-
 
 <li class="nav-item">
     <a href="{{ route('reportes.index') }}" class="nav-link {{ request()->is('reportes*') ? 'active' : '' }}">

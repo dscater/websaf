@@ -12,7 +12,6 @@ use App\Estudiante;
 use App\Inscripcion;
 use App\paralelo;
 use App\ProfesorMateria;
-use App\Asistencia;
 
 class HomeController extends Controller
 {
@@ -48,6 +47,11 @@ class HomeController extends Controller
         $gestion_min = Inscripcion::min('gestion');
         $gestion_max = Inscripcion::max('gestion');
 
+        $actual = date("Y");
+        if ((int)$actual > (int)$gestion_max) {
+            $gestion_max = $actual;
+        }
+
         $array_gestiones = [];
         if ($gestion_min) {
             $array_gestiones[''] = 'Seleccione...';
@@ -70,9 +74,6 @@ class HomeController extends Controller
                 ->get());
 
             $fecha_gestion = date('Y');
-            $asistencias = count(Asistencia::where('user_id', Auth::user()->id)
-                ->where('fecha', 'LIKE', "$fecha_gestion%")
-                ->get());
         }
 
         return view('home', compact('administrativos', 'profesors', 'estudiantes', 'array_gestiones', 'array_paralelos', 'materias', 'asistencias'));

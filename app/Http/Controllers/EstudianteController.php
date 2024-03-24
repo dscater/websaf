@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Asistencia;
 use Illuminate\Http\Request;
-use App\estudiante;
+use App\Estudiante;
 use App\Http\Controllers\UserController;
 use App\Http\Requests\EstudianteStoreRequest;
 use App\Http\Requests\EstudianteUpdateRequest;
+use Barryvdh\DomPDF\Facade as PDF;
 
 use Illuminate\Support\Facades\Hash;
 use App\User;
@@ -113,7 +114,7 @@ class EstudianteController extends Controller
         $nuevo_usuario = new User();
         $nuevo_usuario->name = $nombre_estudiante;
         $nuevo_usuario->password = Hash::make($request->nro_doc);
-        $nuevo_usuario->tipo = 'estudiante';
+        $nuevo_usuario->tipo = 'ESTUDIANTE';
         $nuevo_usuario->foto = 'user_default.png';
         $nuevo_usuario->codigo = $nro_codigo;
         $nuevo_usuario->estado = 1;
@@ -135,12 +136,26 @@ class EstudianteController extends Controller
         return redirect()->route('estudiantes.index')->with('bien', 'Registro realizado con éxito');
     }
 
-    public function edit(estudiante $usuario)
+    public function edit(Estudiante $usuario)
     {
         return view('estudiantes.edit', compact('usuario'));
     }
 
-    public function update(estudiante $usuario, EstudianteUpdateRequest $request)
+    public function formulario(Estudiante $usuario)
+    {
+        $pdf = PDF::loadView('estudiantes.formulario', compact('usuario'))->setPaper('legal', 'portrait');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('formulario.pdf');
+    }
+
+    public function update(Estudiante $usuario, EstudianteUpdateRequest $request)
     {
         $usuario->update(array_map('mb_strtoupper', $request->except('foto')));
 
@@ -165,12 +180,12 @@ class EstudianteController extends Controller
         return redirect()->route('estudiantes.index')->with('bien', 'Usuario modificado con éxito');
     }
 
-    public function show(estudiante $usuario)
+    public function show(Estudiante $usuario)
     {
         return 'mostrar usuario';
     }
 
-    public function destroy(estudiante $usuario)
+    public function destroy(Estudiante $usuario)
     {
         $usuario->estado = 0;
         $usuario->save();

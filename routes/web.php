@@ -94,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('estudiantes/edit/{usuario}', 'EstudianteController@edit')->name('estudiantes.edit');
 
+    Route::get('estudiantes/formulario/{usuario}', 'EstudianteController@formulario')->name('estudiantes.formulario');
+
     Route::put('estudiantes/update/{usuario}', 'EstudianteController@update')->name('estudiantes.update');
 
     Route::delete('estudiantes/destroy/{usuario}', 'EstudianteController@destroy')->name('estudiantes.destroy');
@@ -175,43 +177,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('inscripcions/formulario/{inscripcion}', 'InscripcionController@formulario')->name('inscripcions.formulario');
 
-    // PLAN PAGOS
-    Route::get('plan_pagos', 'PlanPagoController@index')->name('plan_pagos.index');
-
-    Route::get('plan_pagos/create', 'PlanPagoController@create')->name('plan_pagos.create');
-
-    Route::post('plan_pagos/store', 'PlanPagoController@store')->name('plan_pagos.store');
-
-    Route::get('plan_pagos/edit/{plan_pago}', 'PlanPagoController@edit')->name('plan_pagos.edit');
-
-    Route::put('plan_pagos/update/{plan_pago}', 'PlanPagoController@update')->name('plan_pagos.update');
-
-    Route::delete('plan_pagos/destroy/{plan_pago}', 'PlanPagoController@destroy')->name('plan_pagos.destroy');
-
-    Route::get('plan_pagos/getMontoConcepto', 'PlanPagoController@getMontoConcepto')->name('plan_pagos.getMontoConcepto');
-
-    // PAGOS ESTUDIANTES
-    Route::get('pago_estudiantes', 'PagoEstudianteController@index')->name('pago_estudiantes.index');
-
-    Route::get('pago_estudiantes/create', 'PagoEstudianteController@create')->name('pago_estudiantes.create');
-
-    Route::post('pago_estudiantes/store', 'PagoEstudianteController@store')->name('pago_estudiantes.store');
-
-    Route::get('pago_estudiantes/edit/{pago_estudiante}', 'PagoEstudianteController@edit')->name('pago_estudiantes.edit');
-
-    Route::put('pago_estudiantes/update/{pago_estudiante}', 'PagoEstudianteController@update')->name('pago_estudiantes.update');
-
-    Route::delete('pago_estudiantes/destroy/{pago_estudiante}', 'PagoEstudianteController@destroy')->name('pago_estudiantes.destroy');
-
-    Route::get('pago_estudiantes/factura/{pago_estudiante}', 'PagoEstudianteController@factura')->name('pago_estudiantes.factura');
-
-    Route::get('pago_estudiantes/getInfo/ingresos_economicos', 'PagoEstudianteController@ingresos_economicos')->name('pago_estudiantes.ingresos_economicos');
-
-
-    Route::get('pagos/pagos_estudiante/{estudiante}', 'PagoEstudianteController@pagos_estudiante')->name('pagos.pagos_estudiante');
-
-    Route::get('pagos/historial_pagos/{estudiante}', 'PagoEstudianteController@historial_pagos')->name('pagos.historial_pagos');
-
     // CALIFICACIONES
     Route::get('calificacions/{profesor}', 'CalificacionController@index')->name('calificacions.index');
 
@@ -226,21 +191,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('calificacions/boleta/boleta_estudiante/{estudiante}', 'CalificacionController@boleta_estudiante')->name('boleta.boleta_estudiante');
 
     Route::get('calificacions/historial/historial_academico/{estudiante}', 'CalificacionController@historial_academico')->name('calificacions.historial_academico');
-
-    // ASISTENCIAS
-    Route::get('asistencias', 'AsistenciaController@index')->name('asistencias.index');
-
-    Route::get('asistencias/create', 'AsistenciaController@create')->name('asistencias.create');
-
-    Route::post('asistencias/store', 'AsistenciaController@store')->name('asistencias.store');
-
-    Route::get('asistencias/edit/{asistencia}', 'AsistenciaController@edit')->name('asistencias.edit');
-
-    Route::put('asistencias/update/{asistencia}', 'AsistenciaController@update')->name('asistencias.update');
-
-    Route::delete('asistencias/destroy/{asistencia}', 'AsistenciaController@destroy')->name('asistencias.destroy');
-
-    Route::get('asistencias/accion/getAccion', 'AsistenciaController@getAccion')->name('asistencias.getAccion');
 
     // RAZON SOCIAL
     Route::get('razon_social/index', 'RazonSocialController@index')->name('razon_social.index');
@@ -258,7 +208,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reportes/kardex_personal', 'ReporteController@kardex_personal')->name('reportes.kardex_personal');
 
-
     Route::get('reportes/boleta_calificaciones', 'ReporteController@boleta_calificaciones')->name('reportes.boleta_calificaciones');
 
     Route::get('reportes/centralizador_calificacions', 'ReporteController@centralizador_calificacions')->name('reportes.centralizador_calificacions');
@@ -266,12 +215,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reportes/historial_academico', 'ReporteController@historial_academico')->name('reportes.historial_academico');
 
     Route::get('reportes/asignacion_materias', 'ReporteController@asignacion_materias')->name('reportes.asignacion_materias');
-
-    Route::get('reportes/pagos_estudiantes', 'ReporteController@pagos_estudiantes')->name('reportes.pagos_estudiantes');
-
-    Route::get('reportes/ingresos_economicos', 'ReporteController@ingresos_economicos')->name('reportes.ingresos_economicos');
-
-    Route::get('reportes/asistencias', 'ReporteController@asistencias')->name('reportes.asistencias');
 
     Route::get('reportes/historial_asistencia', 'ReporteController@historial_asistencia')->name('reportes.historial_asistencia');
 });

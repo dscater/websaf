@@ -39,27 +39,3 @@
         <a href="#" data-toggle="modal" data-target="#m_asignacion_materias" class="btn btn-info">Asignación de Materias</a>
     </div>
 </div>
-
-<div class="col-md-4">
-    <div class="boton_reporte">
-        <a href="#" data-toggle="modal" data-target="#m_pagos_estudiantes" class="btn btn-info">Pagos de Estudiantes</a>
-    </div>
-</div>
-
-<div class="col-md-4">
-    <div class="boton_reporte">
-        <a href="#" data-toggle="modal" data-target="#m_ingresos_economicos" class="btn btn-info">Ingresos Económicos</a>
-    </div>
-</div>
-
-<div class="col-md-4">
-    <div class="boton_reporte">
-        <a href="#" data-toggle="modal" data-target="#m_asistencias" class="btn btn-info">Asistencia de Estudiantes</a>
-    </div>
-</div>
-
-<div class="col-md-4">
-    <div class="boton_reporte">
-        <a href="#" data-toggle="modal" data-target="#m_historial_asistencia" class="btn btn-info">Historial de asistencia</a>
-    </div>
-</div>

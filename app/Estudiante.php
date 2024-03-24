@@ -16,17 +16,34 @@ class Estudiante extends Model
         'centro_salud', 'veces_centro_salud', 'discapacidad', 'discapacidad_otro',
         'desc_discapacidad', 'agua', 'energia_electrica',
         'banio', 'actividad', 'dias_trabajo', 'recibio_pago', 'internet',
-        'frecuencia_internet', 'llega', 'llega_otro', 'desc_llega', 'ci_padre_tutor', 'ap_padre_tutor', 'nom_padre_tutor', 'idioma_padre_tutor', 'ocupacion_padre_tutor', 'grado_padre_tutor', 'parentezco_padre_tutor', 'ci_madre', 'ap_madre', 'nom_madre',
-        'idioma_madre', 'ocupacion_madre', 'grado_madre', 'lugar', 'foto',
-        'fecha_registro', 'user_id', 'estado',
+        'frecuencia_internet', 'llega', 'llega_otro', 'desc_llega',
+        'ci_padre_tutor', 'ap_padre_tutor', 'nom_padre_tutor', 'idioma_padre_tutor', 'ocupacion_padre_tutor', 'grado_padre_tutor', 'parentezco_padre_tutor',
+        "fn_tutor", "s_tutor", "d_tutor", "cel_tutor",
+        'ci_madre', 'ap_madre', 'nom_madre', 'idioma_madre', 'ocupacion_madre', 'grado_madre',
+        "fn_madre", "s_madre", "d_madre", "cel_madre",
+        'lugar', 'foto', 'fecha_registro', 'user_id', 'estado',
     ];
 
-    protected $appends = ["full_name"];
+    protected $appends = ["full_name", "full_ci", "url_foto"];
+
+    public function getUrlFotoAttribute()
+    {
+        if (file_exists(public_path("imgs/users/" . $this->foto))) {
+            return asset("imgs/users/" . $this->foto);
+        }
+        return asset("imgs/users/user_default.png");
+    }
 
     public function getFullNameAttribute()
     {
         return $this->nombre . ' ' . $this->paterno . ' ' . $this->materno;
     }
+
+    public function getFullCiAttribute()
+    {
+        return $this->nro_doc . ' ' . $this->ci_exp;
+    }
+
 
     public function user()
     {
