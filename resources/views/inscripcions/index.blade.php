@@ -39,6 +39,7 @@
                                     <th>Nivel</th>
                                     <th>Grado</th>
                                     <th>Paralelo</th>
+                                    <th>Est. Inscripción</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -50,6 +51,7 @@
                                     <td>{{$inscripcion->nivel}}</td>
                                     <td>{{$inscripcion->grado}}º</td>
                                     <td>{{$inscripcion->paralelo->paralelo}}</td>
+                                    <td>{{$inscripcion->estado_inscripcion}}</td>
                                     <td class="btns-opciones">
                                         <a href="{{route('inscripcions.formulario',$inscripcion->id)}}" target="_blank" class="ir-evaluacion" data-toggle="tooltip" data-placement="left" title="Formulario"><i class="fa fa-file-pdf"></i></a>
 
@@ -100,7 +102,8 @@
             null,
             null,
             null,
-            {width:"15%"},
+            null,
+            {width:"10%"},
         ],
         scrollCollapse: true,
         language: lenguaje,

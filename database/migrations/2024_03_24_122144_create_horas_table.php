@@ -17,7 +17,7 @@ class CreateHorasTable extends Migration
             $table->id();
             $table->time("hora_ini");
             $table->time("hora_fin");
-            $table->string("recreo", 155);
+            $table->string("recreo", 155)->nullable();
             $table->string("turno", 155);
             $table->timestamps();
         });

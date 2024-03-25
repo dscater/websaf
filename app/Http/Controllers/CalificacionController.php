@@ -13,6 +13,8 @@ use App\ProfesorMateria;
 use App\Estudiante;
 use App\InscripcionMateria;
 use App\Materia;
+use App\NotificacionEstudiante;
+use Illuminate\Support\Facades\Log;
 
 class CalificacionController extends Controller
 {
@@ -92,6 +94,57 @@ class CalificacionController extends Controller
             $calificacion_estudiante->estado = 'REPROBADO';
         }
         $calificacion_estudiante->save();
+
+        // buscar notificacion existente
+        $areas = [
+            "1" => "SER-10",
+            "2" => "SABER-25",
+            "3" => "HACER-35",
+            "4" => "DECIR-10",
+            "5" => "AUTOEVALUACIÓN-10",
+        ];
+
+        $notificacion_estudiante = NotificacionEstudiante::where("inscripcion_id", $calificacion_estudiante->inscripcion_id)
+            ->where("materia_id", $calificacion_estudiante->materia_id)
+            ->where("trimestre", $trimestre->trimestre)
+            ->where("no_area", $area)
+            ->where("actividad_id", $actividad->id)
+            ->where("no_actividad", $nro_actividad)
+            ->get()->first();
+
+        if ((int) $nota > 0 || ($notificacion_estudiante && $notificacion_estudiante->nota != $nota)) {
+
+            $desc = "Nota registrada area " . $areas[$area] . ", actividad nro. " . $nro_actividad;
+            if ($notificacion_estudiante) {
+                $notificacion_estudiante->update([
+                    "estudiante_id" => $calificacion_estudiante->inscripcion->estudiante->id,
+                    "inscripcion_id" => $calificacion_estudiante->inscripcion_id,
+                    "materia_id" => $calificacion_estudiante->materia_id,
+                    "trimestre" => $trimestre->trimestre,
+                    "actividad_id" => $actividad->id,
+                    "txt_area" => $areas[$area],
+                    "no_area" => $area,
+                    "no_actividad" => $nro_actividad,
+                    "nota" => $nota,
+                    "descripcion" => $desc,
+                    "visto" => 0,
+                ]);
+            } else {
+                NotificacionEstudiante::create([
+                    "estudiante_id" => $calificacion_estudiante->inscripcion->estudiante->id,
+                    "inscripcion_id" => $calificacion_estudiante->inscripcion_id,
+                    "materia_id" => $calificacion_estudiante->materia_id,
+                    "trimestre" => $trimestre->trimestre,
+                    "actividad_id" => $actividad->id,
+                    "txt_area" => $areas[$actividad->area],
+                    "no_area" => $actividad->area,
+                    "no_actividad" => $nro_actividad,
+                    "nota" => $nota,
+                    "descripcion" => $desc,
+                    "visto" => 0,
+                ]);
+            }
+        }
 
         return response()->JSON([
             'sw' => true,

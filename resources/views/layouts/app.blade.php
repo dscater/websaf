@@ -44,6 +44,18 @@
     @yield('css')
     <!-- Google Font: Source Sans Pro -->
     <link href="{{ asset('google-fonts/sans_pro.css') }}" rel="stylesheet">
+
+    <style>
+        .contenedor_notificacion {
+            max-height: 40vh;
+        }
+
+        .sin_ver {
+            background: #007dcc;
+            color: white;
+        }
+    </style>
+
 </head>
 
 <body
@@ -51,11 +63,26 @@
     @php
         $nombre_usuario = Auth::user()->name;
         if (Auth::user()->administrativo) {
-            $nombre_usuario = Auth::user()->administrativo->nombre . ' ' . Auth::user()->administrativo->paterno . ' ' . Auth::user()->administrativo->materno;
+            $nombre_usuario =
+                Auth::user()->administrativo->nombre .
+                ' ' .
+                Auth::user()->administrativo->paterno .
+                ' ' .
+                Auth::user()->administrativo->materno;
         } elseif (Auth::user()->profesor) {
-            $nombre_usuario = Auth::user()->profesor->nombre . ' ' . Auth::user()->profesor->paterno . ' ' . Auth::user()->profesor->materno;
+            $nombre_usuario =
+                Auth::user()->profesor->nombre .
+                ' ' .
+                Auth::user()->profesor->paterno .
+                ' ' .
+                Auth::user()->profesor->materno;
         } elseif (Auth::user()->estudiante) {
-            $nombre_usuario = Auth::user()->estudiante->nombre . ' ' . Auth::user()->estudiante->paterno . ' ' . Auth::user()->estudiante->materno;
+            $nombre_usuario =
+                Auth::user()->estudiante->nombre .
+                ' ' .
+                Auth::user()->estudiante->paterno .
+                ' ' .
+                Auth::user()->estudiante->materno;
         }
     @endphp
 
@@ -76,89 +103,38 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
-                {{-- <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i
-                                                class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li> --}}
                 <!-- Notifications Dropdown Menu -->
-                {{-- <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge" id="nroNotificaciones">0</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="contenedorNotificaciones">
+                @if (Auth::user()->tipo == 'ESTUDIANTE')
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge" id="nroNotificaciones">0</span>
+                        </a>
 
-                    </div>
-                </li> --}}
+                        <div class="contenedor_notificacion dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                            id="contenedor_notificacion">
+                            {{-- <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <div class="notificacion">
+                                    NOTIFICACIONES
+                                    <span class="float-right text-muted text-sm hora">
+                                        09:00
+                                    </span>
+                                </div>
+                            </a> --}}
+                        </div>
+                    </li>
+                @endif
                 <li class="nav-item dropdown user user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('imgs/users/' . Auth::user()->foto) }}"
-                            class="user-image img-circle elevation-2" alt="User Image">
+                        <img src="{{ Auth::user()->url_foto }}" class="user-image img-circle elevation-2"
+                            alt="User Image">
                         <span class="hidden-xs">{{ $nombre_usuario }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <!-- User image -->
                         <li class="user-header bg-blue">
-                            <img src="{{ asset('imgs/users/' . Auth::user()->foto) }}" class="img-circle elevation-2"
-                                alt="User Image">
+                            <img src="{{ Auth::user()->url_foto }}" class="img-circle elevation-2" alt="User Image">
                             <p class="text-white">{{ $nombre_usuario }}{{-- <small>Member since Nov. 2012</small> --}}</p>
                             <p class="text-white">{{ Auth::user()->tipo }}</p>
                         </li>
@@ -206,8 +182,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('imgs/users/' . Auth::user()->foto) }}" class="img-circle elevation-2"
-                            alt="User Image">
+                        <img src="{{ Auth::user()->url_foto }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="{{ route('users.config', Auth::user()->id) }}"
@@ -253,6 +228,8 @@
         </div>
         <!-- /.content-wrapper -->
         <input type="hidden" name="token" id="token" value="{{ csrf_token() }}">
+        <input type="hidden" value="{{ route('notificacion_estudiantes.byEstudiante') }}"
+            id="urlGetNotificacionEstudiante">
         <!-- Main Footer -->
         <footer class="main-footer">
             <strong>Copyright &copy; {{ date('Y') }} WEBSAF</strong>
@@ -389,6 +366,45 @@
         //     confirmButtonColor: "#007bff",
         // });
     </script>
+
+    @if (Auth::user()->tipo == 'ESTUDIANTE')
+        <script>
+            let urlGetNotificacionEstudiante = $("#urlGetNotificacionEstudiante").val();
+            let last_id = 0;
+            $(document).ready(function() {
+                getNotificaciones();
+            });
+
+            function getNotificaciones() {
+                $.ajax({
+                    type: "GET",
+                    url: urlGetNotificacionEstudiante,
+                    data: {
+                        last_id: last_id
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.last_id == 0) {
+                            $("#nroNotificaciones").addClass("oculto");
+                        }
+                        if (response.last_id != last_id) {
+                            last_id = response.last_id;
+                            $("#nroNotificaciones").addClass("oculto");
+                            if (response.sin_ver > 0) {
+                                $("#nroNotificaciones").removeClass("oculto");
+                                $("#nroNotificaciones").text(response.sin_ver);
+                            }
+                            $("#contenedor_notificacion").append(response.html)
+                        }
+                        setTimeout(() => {
+                            console.log(last_id);
+                            getNotificaciones();
+                        }, 2000);
+                    }
+                });
+            }
+        </script>
+    @endif
     @yield('scripts')
 
 </body>

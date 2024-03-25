@@ -7,13 +7,33 @@ use App\KardexDesempeno;
 use App\ProfesorMateria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class KardexDesempenoController extends Controller
 {
     public function index(Request $request)
     {
-        $gestion_min = ProfesorMateria::min('gestion');
-        $gestion_max = ProfesorMateria::max('gestion');
+        $array_gestiones = [];
+        if (Auth::user()->tipo == 'PROFESOR') {
+            $gestion_min = ProfesorMateria::min('gestion');
+            $gestion_max = ProfesorMateria::max('gestion');
+
+            $array_gestiones = [];
+            if ($gestion_min) {
+                $array_gestiones[''] = 'Seleccione...';
+                for ($i = (int)$gestion_min; $i <= (int)$gestion_max; $i++) {
+                    $array_gestiones[$i] = $i;
+                }
+            }
+        }
+
+        return view('kardex_desempenos.index', compact('array_gestiones'));
+    }
+
+    public function estudiante()
+    {
+        $gestion_min = Inscripcion::min('gestion');
+        $gestion_max = Inscripcion::max('gestion');
 
         $array_gestiones = [];
         if ($gestion_min) {
@@ -23,7 +43,32 @@ class KardexDesempenoController extends Controller
             }
         }
 
-        return view('kardex_desempenos.index', compact('array_gestiones'));
+        return view('kardex_desempenos.estudiante', compact('array_gestiones'));
+    }
+
+    public function desempeno_pdf(Request $request)
+    {
+        $inscripcion = Inscripcion::where("gestion", $request->gestion)
+            ->where("estudiante_id", $request->estudiante_id)
+            ->get()->first();
+
+        $kardex_desempenos = [];
+        if ($inscripcion) {
+            $kardex_desempenos = KardexDesempeno::where("inscripcion_id", $inscripcion->id)
+                ->orderBy("fecha", "asc")
+                ->get();
+        }
+
+        $pdf = PDF::loadView('kardex_desempenos.pdf', compact('kardex_desempenos', 'inscripcion'))->setPaper('letter', 'portrait');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('desempeño.pdf');
     }
 
     public function getInscripcionsKardex()

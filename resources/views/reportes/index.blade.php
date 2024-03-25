@@ -65,7 +65,11 @@
     @include('reportes.modal.m_centralizador_calificacions')
     @include('reportes.modal.m_historial_academico')
     @include('reportes.modal.m_asignacion_materias')
-@endsection
+    @include('reportes.modal.m_horarios')
+    @include('reportes.modal.m_estadistica_estudiantes')
+    @include('reportes.modal.m_filiacion_padres')
+    @include('reportes.modal.m_kardex_desempenos')
+    @endsection
 
 @section('scripts')
     <script src="{{ asset('js/reportes/filtro.js') }}"></script>

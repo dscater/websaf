@@ -8,7 +8,7 @@ class Inscripcion extends Model
 {
     protected $fillable = [
         'estudiante_id', 'nivel', 'grado', 'paralelo_id',
-        'turno', 'gestion', 'estado', 'status', 'fecha_registro',
+        'turno', 'gestion', 'estado', "estado_inscripcion", 'status', 'fecha_registro',
     ];
 
     public function estudiante()

@@ -17,6 +17,17 @@ class Profesor extends Model
         'user_id', 'estado',
     ];
 
+    protected $appends = ["full_name", "full_ci"];
+    public function getFullNameAttribute()
+    {
+        return $this->nombre . ' ' . $this->paterno . ' ' . $this->materno;
+    }
+
+    public function getFullCiAttribute()
+    {
+        return $this->ci . ' ' . $this->ci_exp;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -45,5 +56,10 @@ class Profesor extends Model
     public function materias()
     {
         return $this->hasMany(ProfesorMateria::class, 'profesor_id');
+    }
+
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class, 'profesor_id');
     }
 }

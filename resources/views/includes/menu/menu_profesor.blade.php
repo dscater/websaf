@@ -7,6 +7,14 @@
 </li>
 
 <li class="nav-item">
+    <a href="{{ route('horarios.profesor') }}"
+        class="nav-link {{ request()->is('horarios*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p style="word-wrap: break-word;">Horarios</p>
+    </a>
+</li>
+
+<li class="nav-item">
     <a href="{{ route('profesor_materias.materias_asignadas', Auth::user()->profesor->id) }}"
         class="nav-link {{ request()->is('profesor_materias*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-list-alt"></i>

@@ -1,41 +1,44 @@
-body{
-    /* background-image: url('../imgs/fondo.jpg')!important; */
-    background-size: cover!important;
-    background-position: center!important;
-    background-repeat: no-repeat!important;
-    /* background:rgb(108, 199, 108)!important; */
+body {
+    background-image: url("../imgs/login.jpg") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
 
-.login-box{
-    margin-top: -50px!important;
-    border:solid 3px rgb(5, 108, 204);
+.login-box {
+    margin-top: -50px !important;
+    border: solid 3px #007dcc;
     height: auto;
-    box-shadow: -3px 3px 20px 3px rgb(5, 108, 204);   
+    /* box-shadow: -3px 3px 20px 3px #007dcc;    */
+
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.card{
+.card {
     margin-bottom: 0px;
 }
 
-.login-card-body{
-    color:white;
-    background:rgb(5, 108, 204)!important; 
+.login-card-body {
+    color: white;
+    background: #007dcc !important;
 }
 
-.input-group-text{
-    color:white!important;
+.input-group-text {
+    color: white !important;
 }
 
-.login-logo{
+.login-logo {
     margin-bottom: 0px;
-    background:rgb(5, 108, 204)!important; 
+    background: #007dcc !important;
 }
 
-.login-logo a{
-    color:white;
+.login-logo a {
+    color: white;
 }
 
-.login-logo img{
+.login-logo img {
     height: 150px;
     width: 90%;
     max-width: 100%;

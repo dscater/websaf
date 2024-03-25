@@ -27,6 +27,9 @@ class ProfesorMateriaController extends Controller
         $profesor = null;
         if (Auth::user()->tipo == 'PROFESOR' && Auth::user()->profesor) {
             $profesor = Auth::user()->profesor;
+        } else {
+            $profesor_id = $request->profesor_id;
+            $profesor = Profesor::find($profesor_id);
         }
         $gestion = $request->gestion;
 

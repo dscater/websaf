@@ -14,11 +14,14 @@ use App\Calificacion;
 use App\CalificacionTrimestre;
 use App\Campo;
 use App\Area;
+use App\Hora;
+use App\Horario;
 use App\Materia;
 use App\MateriaGrado;
 use App\TrimestreActividad;
 use App\ProfesorMateria;
 use App\InscripcionMateria;
+use App\ProfesorColor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -784,5 +787,288 @@ class ReporteController extends Controller
         $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
         return $pdf->stream('AsignacionMaterias.pdf');
+    }
+
+    public function horarios(Request $request)
+    {
+        $nivel = $request->nivel;
+        $grado = $request->grado;
+        $paralelo = $request->paralelo;
+        $gestion = $request->gestion;
+        $turno = $request->turno;
+        // obtener e iterar horas
+        $horas = Hora::where("turno", $turno)
+            ->orderBy("hora_ini", "asc")
+            ->get();
+
+        $dias = [
+            "1" => "LUNES",
+            "2" => "MARTES",
+            "3" => "MIERCOLES",
+            "4" => "JUEVES",
+            "5" => "VIERNES",
+        ];
+
+        $colspan_recreo = 0;
+
+        $array_datos = [];
+        foreach ($dias as $key => $d) {
+            $array_datos[$key] = [
+                "maximo" => 0,
+                "horarios" => [],
+            ];
+            foreach ($horas as $h) {
+                $horarios = Horario::select("horarios.*")
+                    ->join("profesor_materias", "profesor_materias.id", "=", "horarios.profesor_materia_id")
+                    ->where("horarios.hora_id", $h->id)
+                    ->where("horarios.gestion", $gestion)
+                    ->where("horarios.dia", $key)
+                    ->where("profesor_materias.nivel", $nivel)
+                    ->where("profesor_materias.grado", $grado)
+                    ->where("profesor_materias.paralelo_id", $paralelo)
+                    ->get();
+                $total = count($horarios);
+                if ($array_datos[$key]["maximo"] < $total) {
+                    $array_datos[$key]["maximo"] = $total;
+                }
+                $array_datos[$key]["horarios"][$h->id] = $horarios;
+            }
+            $colspan_recreo += (int)$array_datos[$key]["maximo"] > 0 ?  (int)$array_datos[$key]["maximo"] : 1;
+        }
+        $profesor_colors = ProfesorColor::all();
+
+        $paralelo = Paralelo::find($paralelo);
+        $pdf = PDF::loadView('reportes.horarios',  compact("horas", "dias", "array_datos", "colspan_recreo", "profesor_colors", "gestion", "nivel", "grado", "paralelo", "turno"))->setPaper('letter', 'landscape');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('horarios.pdf');
+    }
+
+    public function estadistica_estudiantes(Request $request)
+    {
+        $nivel = $request->nivel;
+        $grado = $request->grado;
+        $paralelo = $request->paralelo;
+        $gestion = $request->gestion;
+        $turno = $request->turno;
+
+        // TOTALES
+        $t_v = count(Inscripcion::select("inscripcions.id")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("estudiantes.sexo", "M")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->get());
+
+        $t_m = count(Inscripcion::select("inscripcions.id")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("estudiantes.sexo", "F")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->get());
+
+        // NO INCORPORADOS
+        $t_v_ni = count(Inscripcion::select("inscripcions.id")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("estudiantes.sexo", "M")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->where("inscripcions.estado_inscripcion", "NO INCORPORADO")
+            ->get());
+
+        $t_m_ni = count(Inscripcion::select("inscripcions.id")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("estudiantes.sexo", "F")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->where("inscripcions.estado_inscripcion", "NO INCORPORADO")
+            ->get());
+
+        // RETIRADOS
+        $t_v_re = count(Inscripcion::select("inscripcions.id")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("estudiantes.sexo", "M")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->where("inscripcions.estado_inscripcion", "RETIRADO")
+            ->get());
+
+        $t_m_re = count(Inscripcion::select("inscripcions.id")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("estudiantes.sexo", "F")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->where("inscripcions.estado_inscripcion", "RETIRADO")
+            ->get());
+
+
+        $fecha_menor = Inscripcion::select("estudiantes.fecha_nac")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->orderBy("fecha_nac", "asc")
+            ->get()->first();
+
+        $fecha_mayor = Inscripcion::select("estudiantes.fecha_nac")
+            ->join("estudiantes", "estudiantes.id", "=", "inscripcions.estudiante_id")
+            ->where("inscripcions.nivel", $nivel)
+            ->where("inscripcions.grado", $grado)
+            ->where("inscripcions.paralelo_id", $paralelo)
+            ->where("inscripcions.gestion", $gestion)
+            ->where("inscripcions.turno", $turno)
+            ->where("inscripcions.status", 1)
+            ->orderBy("fecha_nac", "desc")
+            ->get()->first();
+
+
+        $fecha_menor = $fecha_menor->fecha_nac;
+        $fecha_mayor = $fecha_mayor->fecha_nac;
+
+        $fecha_aux = $fecha_mayor;
+        $array_fechas = [];
+        while ($fecha_aux >= $fecha_menor) {
+            $array_fechas[] = date("Y", strtotime($fecha_aux));
+            $fecha_aux = date("Y-m-d", strtotime($fecha_aux . "-1 years"));
+        }
+
+        $anio_menor = date("Y", strtotime($fecha_menor));
+        $anio_mayor = date("Y", strtotime($fecha_mayor));
+
+        $edad_mayor = (int)date("Y") - $anio_menor;
+        $edad_menor = (int)date("Y") - $anio_mayor;
+        $edades = [];
+        for ($i = $edad_menor; $i <= $edad_mayor; $i++) {
+            $edades[] = $i;
+        }
+
+        $paralelo = Paralelo::find($paralelo);
+        $pdf = PDF::loadView('reportes.estadistica_estudiantes',  compact(
+            "t_v",
+            "t_m",
+            "t_v_ni",
+            "t_m_ni",
+            "t_v_re",
+            "t_m_re",
+            "gestion",
+            "nivel",
+            "grado",
+            "paralelo",
+            "turno",
+            "edades",
+            "array_fechas"
+        ))->setPaper('letter', 'portrait');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('estadistica_estudiantes.pdf');
+    }
+
+    public function filiacion_padres(Request $request)
+    {
+        $nivel = $request->nivel;
+        $grado = $request->grado;
+        $paralelo = $request->paralelo;
+        $gestion = $request->gestion;
+        $turno = $request->turno;
+
+        $inscripcions = Inscripcion::where("gestion", $gestion)
+            ->where("grado", $grado)
+            ->where("paralelo_id", $paralelo)
+            ->where("nivel", $nivel)
+            ->where("turno", $turno)
+            ->get();
+
+        $paralelo = Paralelo::find($paralelo);
+        $pdf = PDF::loadView('reportes.filiacion_padres',  compact(
+            "inscripcions",
+            "gestion",
+            "nivel",
+            "grado",
+            "paralelo",
+            "turno",
+        ))->setPaper('letter', 'portrait');
+
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('filiacion_padres.pdf');
+    }
+
+    public function kardex_desempenos(Request $request)
+    {
+        $nivel = $request->nivel;
+        $grado = $request->grado;
+        $paralelo = $request->paralelo;
+        $gestion = $request->gestion;
+        $turno = $request->turno;
+
+        $inscripcions = Inscripcion::where("gestion", $gestion)
+            ->where("grado", $grado)
+            ->where("paralelo_id", $paralelo)
+            ->where("nivel", $nivel)
+            ->where("turno", $turno)
+            ->get();
+
+        $paralelo = Paralelo::find($paralelo);
+        $pdf = PDF::loadView('reportes.kardex_desempenos',  compact(
+            "inscripcions",
+            "gestion",
+            "nivel",
+            "grado",
+            "paralelo",
+            "turno",
+        ))->setPaper('letter', 'portrait');
+
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->stream('kardex_desempenos.pdf');
     }
 }

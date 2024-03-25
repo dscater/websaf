@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Estudiante extends Model
@@ -58,5 +59,16 @@ class Estudiante extends Model
     public function pagos()
     {
         return $this->hasMany(PagoEstudiante::class, 'estudiante_id');
+    }
+
+    public static function getEdadFecha($fecha)
+    {
+        // Crear un objeto Carbon a partir de la fecha de nacimiento
+        $fechaNacimiento = Carbon::createFromFormat('Y-m-d', $fecha);
+
+        // Calcular la edad usando el método diffInYears()
+        $edad = $fechaNacimiento->diffInYears(Carbon::now());
+
+        return $edad;
     }
 }

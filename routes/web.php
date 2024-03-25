@@ -1,6 +1,9 @@
 <?php
 
+use App\Estudiante;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,20 @@ Auth::routes();
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');
+    return 'Proceso realizado';
+});
+
+Route::get('/reasignar_estudiantes', function () {
+    $estudiantes = Estudiante::all();
+    $nro_codigo = 500001;
+    foreach ($estudiantes as $key => $item) {
+        $nombre_estudiante = UserController::nombreUsuario($item->nombre, $item->paterno, $item->materno);
+        $item->user->name = $nombre_estudiante . $nro_codigo;
+        $item->user->password = Hash::make($item->nro_doc);
+        $item->user->save();
+        $nro_codigo++;
+    }
+
     return 'Proceso realizado';
 });
 
@@ -199,6 +216,9 @@ Route::middleware(['auth'])->group(function () {
     // KARDEX DESEMPEÑO ACADEMICO
     Route::get('kardex_desempenos', 'KardexDesempenoController@index')->name('kardex_desempenos.index');
 
+    Route::get('kardex_desempenos/estudiante', 'KardexDesempenoController@estudiante')->name('kardex_desempenos.estudiante');
+    Route::get('kardex_desempenos/estudiante/desempeno_pdf', 'KardexDesempenoController@desempeno_pdf')->name('kardex_desempenos.desempeno_pdf');
+
     Route::get('kardex_desempenos/show/{profesor_materia}/{inscripcion}', 'KardexDesempenoController@show')->name('kardex_desempenos.show');
 
     Route::get('kardex_desempenos/getInscripcionsKardex', 'KardexDesempenoController@getInscripcionsKardex')->name('kardex_desempenos.getInscripcionsKardex');
@@ -212,6 +232,58 @@ Route::middleware(['auth'])->group(function () {
     Route::put('kardex_desempenos/update/{kardex_desempeno}', 'KardexDesempenoController@update')->name('kardex_desempenos.update');
 
     Route::delete('kardex_desempenos/destroy/{kardex_desempeno}', 'KardexDesempenoController@destroy')->name('kardex_desempenos.destroy');
+
+    // PROFESOR COLORS
+    Route::get('profesor_colors', 'ProfesorColorController@index')->name('profesor_colors.index');
+
+    Route::get('profesor_colors/create', 'ProfesorColorController@create')->name('profesor_colors.create');
+
+    Route::post('profesor_colors/store', 'ProfesorColorController@store')->name('profesor_colors.store');
+
+    Route::get('profesor_colors/edit/{profesor_color}', 'ProfesorColorController@edit')->name('profesor_colors.edit');
+
+    Route::put('profesor_colors/update/{profesor_color}', 'ProfesorColorController@update')->name('profesor_colors.update');
+
+    Route::delete('profesor_colors/destroy/{profesor_color}', 'ProfesorColorController@destroy')->name('profesor_colors.destroy');
+
+    // HORAS
+    Route::get('horas', 'HoraController@index')->name('horas.index');
+
+    Route::get('horas/create', 'HoraController@create')->name('horas.create');
+
+    Route::post('horas/store', 'HoraController@store')->name('horas.store');
+
+    Route::get('horas/edit/{hora}', 'HoraController@edit')->name('horas.edit');
+
+    Route::put('horas/update/{hora}', 'HoraController@update')->name('horas.update');
+
+    Route::delete('horas/destroy/{hora}', 'HoraController@destroy')->name('horas.destroy');
+
+    // HORARIOS
+    Route::get('horarios', 'HorarioController@index')->name('horarios.index');
+
+    Route::get('horarios/estudiante_info', 'HorarioController@estudiante_info')->name('horarios.estudiante_info');
+    Route::get('horarios/estudiante', 'HorarioController@estudiante')->name('horarios.estudiante');
+
+    Route::get('horarios/profesor_info', 'HorarioController@profesor_info')->name('horarios.profesor_info');
+    Route::get('horarios/profesor', 'HorarioController@profesor')->name('horarios.profesor');
+
+    Route::get('horarios/create', 'HorarioController@create')->name('horarios.create');
+
+    Route::post('horarios/store', 'HorarioController@store')->name('horarios.store');
+
+    Route::get('horarios/edit/{horario}', 'HorarioController@edit')->name('horarios.edit');
+
+    Route::put('horarios/update/{horario}', 'HorarioController@update')->name('horarios.update');
+
+    Route::delete('horarios/destroy/{horario}', 'HorarioController@destroy')->name('horarios.destroy');
+
+    // NOTIFICACION ESTUDIANTES
+    Route::get('notificacion_estudiantes', 'NotificacionEstudianteController@index')->name('notificacion_estudiantes.index');
+
+    Route::get('notificacion_estudiantes/byEstudiante', 'NotificacionEstudianteController@byEstudiante')->name('notificacion_estudiantes.byEstudiante');
+
+    Route::get('notificacion_estudiantes/show/{notificacion_estudiante}', 'NotificacionEstudianteController@show')->name('notificacion_estudiantes.show');
 
     // RAZON SOCIAL
     Route::get('razon_social/index', 'RazonSocialController@index')->name('razon_social.index');
@@ -237,5 +309,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reportes/asignacion_materias', 'ReporteController@asignacion_materias')->name('reportes.asignacion_materias');
 
-    Route::get('reportes/historial_asistencia', 'ReporteController@historial_asistencia')->name('reportes.historial_asistencia');
+    Route::get('reportes/horarios', 'ReporteController@horarios')->name('reportes.horarios');
+
+    Route::get('reportes/estadistica_estudiantes', 'ReporteController@estadistica_estudiantes')->name('reportes.estadistica_estudiantes');
+
+    Route::get('reportes/filiacion_padres', 'ReporteController@filiacion_padres')->name('reportes.filiacion_padres');
+
+    Route::get('reportes/kardex_desempenos', 'ReporteController@kardex_desempenos')->name('reportes.kardex_desempenos');
 });
