@@ -18,8 +18,6 @@ use App\Materia;
 use App\MateriaGrado;
 use App\TrimestreActividad;
 use App\ProfesorMateria;
-use App\PagoEstudiante;
-use App\Asistencia;
 use App\InscripcionMateria;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -33,20 +31,6 @@ class ReporteController extends Controller
             ->where('users.estado', 1)
             ->get();
 
-        $gestion_min = Asistencia::min('fecha');
-        $gestion_max = Asistencia::max('fecha');
-        $gestion_min = date('Y', strtotime($gestion_min));
-        $gestion_max = date('Y', strtotime($gestion_max));
-        if ($gestion_max < date("Y")) {
-            $gestion_max = date("Y");
-        }
-        $array_gestiones = [];
-        if ($gestion_min) {
-            $array_gestiones[''] = 'Seleccione...';
-            for ($i = (int)$gestion_min; $i <= (int)$gestion_max; $i++) {
-                $array_gestiones[$i] = $i;
-            }
-        }
 
         $administrativos = Administrativo::select('administrativos.*')
             ->where('administrativos.user_id', NULL)
@@ -101,7 +85,7 @@ class ReporteController extends Controller
             }
         }
 
-        return view('reportes.index', compact('usuarios', 'array_gestiones', 'array_gestiones_insc', 'array_personal', 'array_paralelos', 'array_estudiantes', 'array_estudiantes2', 'array_profesors'));
+        return view('reportes.index', compact('usuarios', 'array_gestiones_insc', 'array_personal', 'array_paralelos', 'array_estudiantes', 'array_estudiantes2', 'array_profesors'));
     }
 
     public function usuarios(Request $request)

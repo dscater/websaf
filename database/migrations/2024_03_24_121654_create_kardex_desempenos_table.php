@@ -17,16 +17,18 @@ class CreateKardexDesempenosTable extends Migration
             $table->id();
             $table->unsignedBigInteger("estudiante_id");
             $table->unsignedBigInteger("inscripcion_id");
-            $table->string("i_a");
-            $table->string("i_b");
-            $table->string("i_c");
-            $table->string("i_d");
-            $table->string("i_e");
-            $table->string("i_f");
-            $table->string("i_g");
-            $table->string("i_h");
-            $table->string("i_i");
-            $table->string("i_j");
+            $table->unsignedBigInteger("materia_id");
+            $table->unsignedBigInteger("profesor_materia_id");
+            $table->string("i_a")->nullable();
+            $table->string("i_b")->nullable();
+            $table->string("i_c")->nullable();
+            $table->string("i_d")->nullable();
+            $table->string("i_e")->nullable();
+            $table->string("i_f")->nullable();
+            $table->string("i_g")->nullable();
+            $table->string("i_h")->nullable();
+            $table->string("i_i")->nullable();
+            $table->string("i_j")->nullable();
             $table->date("fecha");
             $table->string("observaciones", 500);
             $table->string("aspectos_positivos", 500);
@@ -34,6 +36,9 @@ class CreateKardexDesempenosTable extends Migration
 
             $table->foreign("estudiante_id")->on("estudiantes")->references("id");
             $table->foreign("inscripcion_id")->on("inscripcions")->references("id");
+
+            $table->foreign("materia_id")->on("materias")->references("id");
+            $table->foreign("profesor_materia_id")->on("profesor_materias")->references("id");
         });
     }
 

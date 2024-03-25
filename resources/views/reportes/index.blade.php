@@ -65,10 +65,6 @@
     @include('reportes.modal.m_centralizador_calificacions')
     @include('reportes.modal.m_historial_academico')
     @include('reportes.modal.m_asignacion_materias')
-    @include('reportes.modal.m_pagos_estudiantes')
-    @include('reportes.modal.m_ingresos_economicos')
-    @include('reportes.modal.m_asistencias')
-    @include('reportes.modal.m_historial_asistencia')
 @endsection
 
 @section('scripts')

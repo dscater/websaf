@@ -8,6 +8,7 @@ use App\ProfesorMateria;
 use App\Paralelo;
 use App\Materia;
 use App\Inscripcion;
+use Illuminate\Support\Facades\Auth;
 
 class ProfesorMateriaController extends Controller
 {
@@ -19,6 +20,30 @@ class ProfesorMateriaController extends Controller
             $array_paralelos[$value->id] = $value->paralelo;
         }
         return view('profesors.profesor_materias', compact('profesor', 'array_paralelos'));
+    }
+
+    public function getProfesorMateriasGestion(Request $request)
+    {
+        $profesor = null;
+        if (Auth::user()->tipo == 'PROFESOR' && Auth::user()->profesor) {
+            $profesor = Auth::user()->profesor;
+        }
+        $gestion = $request->gestion;
+
+        $profesor_materias = ProfesorMateria::where("profesor_id", $profesor->id)
+            ->where("gestion", $gestion)
+            ->get();
+
+        $options = '<option value="">- Seleccione -</option>';
+
+        foreach ($profesor_materias as $pm) {
+            $options .= '<option value="' . $pm->id . '">' . $pm->materia->nombre . '<small>(' . $pm->turno . ')</small></option>';
+        }
+
+        return response()->JSON([
+            "profesor_materias" => $profesor_materias,
+            "options" => $options,
+        ]);
     }
 
     public function materias_asignadas(Profesor $profesor)

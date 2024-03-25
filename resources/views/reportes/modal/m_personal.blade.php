@@ -26,7 +26,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Seleccione:</label>
-                            {{Form::select('gestion',$array_gestiones,date('Y'),['class'=>'form-control','id'=>'gestion'])}}
+                            {{Form::select('gestion',$array_gestiones_insc,date('Y'),['class'=>'form-control','id'=>'gestion'])}}
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ use App\Paralelo;
 use App\Materia;
 use App\Calificacion;
 use App\CalificacionTrimestre;
+use App\ProfesorMateria;
 use App\TrimestreActividad;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -178,6 +179,26 @@ class InscripcionController extends Controller
             'sw' => true,
             'data' => $data,
             'titulo' => $titulo
+        ]);
+    }
+
+    public function getInscripcionsByProfesorMateria(Request $request)
+    {
+        $profesor_materia = ProfesorMateria::find($request->profesor_materia_id);
+
+        $inscripcions = inscripcion::where("nivel", $profesor_materia->nivel)
+            ->where("grado", $profesor_materia->grado)
+            ->where("paralelo_id", $profesor_materia->paralelo_id)
+            ->where("turno", $profesor_materia->turno)
+            ->where("gestion", $profesor_materia->gestion)
+            ->where("status", 1)
+            ->get();
+
+        $html = view("kardex_desempenos.parcial.inscripcions", compact("inscripcions", "profesor_materia"))->render();
+
+        return response()->JSON([
+            "inscripcions" => $inscripcions,
+            "html" => $html
         ]);
     }
 

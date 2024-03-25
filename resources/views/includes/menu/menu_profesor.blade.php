@@ -1,12 +1,22 @@
 <li class="nav-item">
-    <a href="{{ route('profesor_materias.materias_asignadas',Auth::user()->profesor->id) }}" class="nav-link {{ request()->is('profesor_materias*') ? 'active' : '' }}">
+    <a href="{{ route('kardex_desempenos.index') }}"
+        class="nav-link {{ request()->is('kardex_desempenos*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-list-alt"></i>
+        <p style="word-wrap: break-word;">Desempeño académico</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('profesor_materias.materias_asignadas', Auth::user()->profesor->id) }}"
+        class="nav-link {{ request()->is('profesor_materias*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-list-alt"></i>
         <p>Asignación de Materias</p>
     </a>
 </li>
 
 <li class="nav-item">
-    <a href="{{ route('calificacions.index',Auth::user()->profesor->id) }}" class="nav-link {{ request()->is('calificacions*') ? 'active' : '' }}">
+    <a href="{{ route('calificacions.index', Auth::user()->profesor->id) }}"
+        class="nav-link {{ request()->is('calificacions*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-list-alt"></i>
         <p>Administrar calificaciones</p>
     </a>

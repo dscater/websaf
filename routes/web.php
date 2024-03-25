@@ -69,6 +69,8 @@ Route::middleware(['auth'])->group(function () {
     // PROFESORES-MATERIAS
     Route::get('profesor_materias/{profesor}', 'ProfesorMateriaController@index')->name('profesor_materias.index');
 
+    Route::get('profesor_materias/byGestion/getProfesorMateriasGestion', 'ProfesorMateriaController@getProfesorMateriasGestion')->name('profesor_materias.getProfesorMateriasGestion');
+
     Route::get('profesor_materias/create/{profesor}', 'ProfesorMateriaController@create')->name('profesor_materias.create');
 
     Route::post('profesor_materias/store/{profesor}', 'ProfesorMateriaController@store')->name('profesor_materias.store');
@@ -163,6 +165,8 @@ Route::middleware(['auth'])->group(function () {
     // INSCRIPCIONES
     Route::get('inscripcions', 'InscripcionController@index')->name('inscripcions.index');
 
+    Route::get('inscripcions/getInscripcionsByProfesorMateria', 'InscripcionController@getInscripcionsByProfesorMateria')->name('inscripcions.getInscripcionsByProfesorMateria');
+
     Route::get('inscripcions/create', 'InscripcionController@create')->name('inscripcions.create');
 
     Route::post('inscripcions/store', 'InscripcionController@store')->name('inscripcions.store');
@@ -191,6 +195,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('calificacions/boleta/boleta_estudiante/{estudiante}', 'CalificacionController@boleta_estudiante')->name('boleta.boleta_estudiante');
 
     Route::get('calificacions/historial/historial_academico/{estudiante}', 'CalificacionController@historial_academico')->name('calificacions.historial_academico');
+
+    // KARDEX DESEMPEÑO ACADEMICO
+    Route::get('kardex_desempenos', 'KardexDesempenoController@index')->name('kardex_desempenos.index');
+
+    Route::get('kardex_desempenos/show/{profesor_materia}/{inscripcion}', 'KardexDesempenoController@show')->name('kardex_desempenos.show');
+
+    Route::get('kardex_desempenos/getInscripcionsKardex', 'KardexDesempenoController@getInscripcionsKardex')->name('kardex_desempenos.getInscripcionsKardex');
+
+    Route::get('kardex_desempenos/create/{profesor_materia}/{inscripcion}', 'KardexDesempenoController@create')->name('kardex_desempenos.create');
+
+    Route::post('kardex_desempenos/store/{profesor_materia}/{inscripcion}', 'KardexDesempenoController@store')->name('kardex_desempenos.store');
+
+    Route::get('kardex_desempenos/edit/{kardex_desempeno}', 'KardexDesempenoController@edit')->name('kardex_desempenos.edit');
+
+    Route::put('kardex_desempenos/update/{kardex_desempeno}', 'KardexDesempenoController@update')->name('kardex_desempenos.update');
+
+    Route::delete('kardex_desempenos/destroy/{kardex_desempeno}', 'KardexDesempenoController@destroy')->name('kardex_desempenos.destroy');
 
     // RAZON SOCIAL
     Route::get('razon_social/index', 'RazonSocialController@index')->name('razon_social.index');
